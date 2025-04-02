@@ -1,0 +1,42 @@
+a {
+  text-decoration: none;
+  transition: all 0.3s ease-in;
+  color: #898989 !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+span,
+p {
+  color: rgb(53, 53, 53);
+}
+
+a:hover {
+  color: rgb(53, 53, 53) !important;
+}
+
+@media screen and (max-width: 766px) {
+  li.nav-item {
+    padding: 0.25rem 0px;
+  }
+  ul.navbar-nav {
+    align-items: flex-start !important;
+    margin-left: 0.5rem;
+  }
+}
+
+.customHotel {
+  transition: all 0.2s ease-in;
+  cursor: pointer;
+}
+
+.customHotel:hover {
+  transform: scale(1.02);
+}
+
+.customInput{
+    margin:0.25rem 0;
+}
