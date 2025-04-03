@@ -23,9 +23,23 @@ function App() {
     if (Object.keys(userInfo).length > 0) {
       ReactPixel.init(state.pixelId, userInfo);
       ReactPixel.track(eventType, dataParams);
+      console.log(
+        `Sending tracking event: ${eventType}\nWith user details: {${Object.entries(
+          userInfo
+        ).map(
+          ([key, value]) => `${key}:${value}`
+        )}}\nWith data params: {${Object.entries(dataParams).map(
+          ([key, value]) => `${key}:${value}`
+        )}}`
+      );
     } else {
       ReactPixel.init(state.pixelId, userInfo);
       ReactPixel.track(eventType, dataParams);
+      console.log(
+        `Sending tracking event: ${eventType}\nWith no user details\nWith data params: {${Object.entries(dataParams).map(
+          ([key, value]) => `${key}:${value}`
+        )}}`
+      );
     }
     setDataParams({});
   };
@@ -69,6 +83,7 @@ function App() {
         >
           {userInfoFieldsJson.map((field) => (
             <Input
+              key={field.label}
               onChange={handleUserInfo}
               id={field.parameter}
               label={field.label}
@@ -76,6 +91,7 @@ function App() {
             />
           ))}
         </div>
+        <button onClick={() => setUserInfo({})}>Delete</button>
       </div>
       <hr />
       <div
