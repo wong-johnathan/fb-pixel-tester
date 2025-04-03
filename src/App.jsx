@@ -58,7 +58,15 @@ function App() {
   };
 
   return (
-    <div style={{ width: "100vw" }}>
+    <div
+      style={{
+        width: "auto",
+        padding: "1rem",
+        maxWidth: "800px",
+        marginLeft: "auto",
+        marginRight: "auto",
+      }}
+    >
       <ConfigInput state={state} handleUpdate={handleUpdate} />
       <hr />
       <UserDetailsInput onChange={handleUserInfo} userInfo={userInfo} />
