@@ -79,7 +79,7 @@ function App() {
     >
       <ConfigInput state={state} handleUpdate={handleUpdate} />
       <hr />
-      <UserDetailsInput onChange={handleUserInfo} userInfo={userInfo} />
+      <UserDetailsInput onChange={handleUserInfo} userInfo={userInfo} setUserInfo={setUserInfo}/>
       <hr />
       <EventDetailsInput
         handleDataParams={handleDataParams}

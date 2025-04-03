@@ -1,7 +1,7 @@
 import { userInfoFieldsJson } from "../config/userInfoJson";
 import Input from "./Input";
 
-const UserDetailsInput = ({ onChange, userInfo }) => {
+const UserDetailsInput = ({ onChange, userInfo, setUserInfo }) => {
   return (
     <div
       style={{
