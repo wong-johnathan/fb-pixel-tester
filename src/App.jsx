@@ -20,7 +20,13 @@ function App() {
     setEventType(e.target.value);
   };
   const sendEvent = () => {
-    ReactPixel.track(eventType, dataParams);
+    if (Object.keys(userInfo).length > 0) {
+      ReactPixel.init(state.pixelId, userInfo);
+      ReactPixel.track(eventType, dataParams);
+    } else {
+      ReactPixel.init(state.pixelId, userInfo);
+      ReactPixel.track(eventType, dataParams);
+    }
     setDataParams({});
   };
 
@@ -37,10 +43,6 @@ function App() {
       [e.target.id]: e.target.value,
     }));
   };
-
-  useEffect(() => {
-    ReactPixel.init(state.pixelId);
-  }, [state]);
 
   return (
     <div style={{ width: "100vw" }}>
@@ -70,6 +72,7 @@ function App() {
               onChange={handleUserInfo}
               id={field.parameter}
               label={field.label}
+              value={userInfo[field.parameter]}
             />
           ))}
         </div>
