@@ -4,6 +4,7 @@ import Input from "./components/Input";
 import { fbEvents } from "./config/fbEvents";
 import { ConfigInput } from "./components/ConfigInput";
 import ReactPixel from "react-facebook-pixel";
+import { userInfoFieldsJson } from "./config/userInfoJson";
 
 function App() {
   const { state, updateState } = useContext(MetaContext);
@@ -13,6 +14,7 @@ function App() {
 
   const [eventType, setEventType] = useState("ViewContent");
   const [dataParams, setDataParams] = useState({});
+  const [userInfo, setUserInfo] = useState({});
 
   const handleEventSelect = (e) => {
     setEventType(e.target.value);
@@ -29,6 +31,13 @@ function App() {
     }));
   };
 
+  const handleUserInfo = (e) => {
+    setUserInfo((prevState) => ({
+      ...prevState,
+      [e.target.id]: e.target.value,
+    }));
+  };
+
   useEffect(() => {
     ReactPixel.init(state.pixelId);
   }, [state]);
@@ -36,6 +45,36 @@ function App() {
   return (
     <div style={{ width: "100vw" }}>
       <ConfigInput state={state} handleUpdate={handleUpdate} />
+      <hr />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+          marginBottom: "0.5rem",
+        }}
+      >
+        <span>User Info: (Optional):</span>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "row",
+            alignItems: "center",
+            columnGap: "0.25rem",
+          }}
+        >
+          {userInfoFieldsJson.map((field) => (
+            <Input
+              onChange={handleUserInfo}
+              id={field.parameter}
+              label={field.label}
+            />
+          ))}
+        </div>
+      </div>
+      <hr />
       <div
         style={{
           display: "flex",
@@ -80,7 +119,7 @@ function App() {
         </div>
         {eventType && (
           <div style={{ paddingLeft: "0.5rem" }}>
-            <p style={{ margin: 0 }}>Parameters:</p>
+            <p style={{ margin: 0, textAlign: "center" }}>Parameters:</p>
             <div
               style={{
                 marginLeft: "0.5rem",
