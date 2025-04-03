@@ -81,11 +81,11 @@ const EventDetailsInput = ({
             <button onClick={sendEvent} style={{ minWidth: "250px" }}>
               Send Event
             </button>
-            {state.accessToken && (
+            {/* {state.accessToken && (
               <button onClick={sendCAPI} style={{ minWidth: "250px" }}>
                 Send CAPI
               </button>
-            )}
+            )} */}
           </div>
         </div>
       )}
