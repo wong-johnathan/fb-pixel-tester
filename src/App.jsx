@@ -18,25 +18,35 @@ function App() {
   const handleEventSelect = (e) => {
     setEventType(e.target.value);
   };
+
+  const prepareParamsData = (data) => {
+    Object.keys(data).forEach((key) => {
+      if (key === "content_ids") {
+        data[key] = String(data[key]).split(",");
+      }
+    });
+    return data;
+  };
+
   const sendEvent = () => {
     if (Object.keys(userInfo).length > 0) {
       ReactPixel.init(state.pixelId, userInfo);
-      ReactPixel.track(eventType, dataParams);
+      ReactPixel.track(eventType, prepareParamsData(dataParams));
       console.log(
         `Sending tracking event: ${eventType}\nWith user details: {${Object.entries(
           userInfo
         ).map(
           ([key, value]) => `${key}:${value}`
-        )}}\nWith data params: {${Object.entries(dataParams).map(
-          ([key, value]) => `${key}:${value}`
-        )}}`
+        )}}\nWith data params: {${Object.entries(
+          prepareParamsData(dataParams)
+        ).map(([key, value]) => `${key}:${value}`)}}`
       );
     } else {
-      ReactPixel.init(state.pixelId, userInfo);
-      ReactPixel.track(eventType, dataParams);
+      ReactPixel.init(state.pixelId);
+      ReactPixel.track(eventType, prepareParamsData(dataParams));
       console.log(
         `Sending tracking event: ${eventType}\nWith no user details\nWith data params: {${Object.entries(
-          dataParams
+          prepareParamsData(dataParams)
         ).map(([key, value]) => `${key}:${value}`)}}`
       );
     }
