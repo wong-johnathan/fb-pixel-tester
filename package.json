@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "vite --port 3000",
-    "build": "vite build",
+    "dev": "vite --port 3000",
+    "start": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -13,6 +13,9 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-facebook-pixel": "^1.0.4"
+  },
+  "engines": {
+    "node": "20.x"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
