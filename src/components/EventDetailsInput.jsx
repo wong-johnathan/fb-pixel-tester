@@ -5,7 +5,8 @@ const EventDetailsInput = ({
   handleEventSelect,
   eventType,
   handleDataParams,
-  sendEvent,dataParams
+  sendEvent,
+  dataParams,
 }) => (
   <div
     style={{
@@ -69,6 +70,7 @@ const EventDetailsInput = ({
                 onChange={handleDataParams}
                 value={dataParams[parameter.name]}
                 id={parameter.name}
+                description={parameter.description}
               />
             ))}
           <button onClick={sendEvent} style={{ minWidth: "250px" }}>
@@ -80,4 +82,4 @@ const EventDetailsInput = ({
   </div>
 );
 
-export default EventDetailsInput
+export default EventDetailsInput;

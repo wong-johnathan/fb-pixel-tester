@@ -4,6 +4,19 @@ export const fbEvents = [
     description: "When a purchase is made",
     parameters: [
       {
+        name: "content_ids",
+        description: "(seperate fields with ,)",
+        type: "string",
+      },
+      {
+        name: "content_type",
+        type: "string",
+      },
+      {
+        name: "quantity",
+        type: "number",
+      },
+      {
         name: "currency",
         type: "string",
       },
@@ -18,7 +31,8 @@ export const fbEvents = [
     description: "When an item is added to the shopping cart",
     parameters: [
       {
-        name: "content_id",
+        name: "content_ids",
+        description: "(seperate fields with ,)",
         type: "string",
       },
       {
