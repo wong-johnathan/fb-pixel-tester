@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext,useState } from "react";
 import { fbEvents } from "../config/fbEvents";
 import Input from "./Input";
 import { MetaContext } from "../context/PixelContext";
@@ -9,9 +9,11 @@ const EventDetailsInput = ({
   handleDataParams,
   sendEvent,
   dataParams,
-  sendCAPI,
 }) => {
   const { state } = useContext(MetaContext);
+  const [paramters,setParameters] = useState([])
+
+  const addParamter = () => {};
   return (
     <div
       style={{
@@ -66,7 +68,7 @@ const EventDetailsInput = ({
           >
             {fbEvents
               .find((event) => event.name === eventType)
-              .parameters.map((parameter) => (
+              .parameters?.map((parameter) => (
                 <Input
                   key={parameter.name}
                   label={parameter.name}
@@ -78,14 +80,42 @@ const EventDetailsInput = ({
                   description={parameter.description}
                 />
               ))}
+            {eventType === "CustomEvent" && (
+              <>
+                <div style={{ display: "flex", flexDirection: "row", columnGap:"0.5rem" }}>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <label
+                      style={{
+                        textAlign: "center",
+                        fontStyle: "italics",
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      Parameter name:
+                    </label>
+                    <input />
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <label
+                      style={{
+                        textAlign: "center",
+                        fontStyle: "italics",
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      Parameter value:
+                    </label>
+                    <input />
+                  </div>
+                </div>
+                <button onClick={addParamter} style={{ minWidth: "250px" }}>
+                  Add Parameter
+                </button>
+              </>
+            )}
             <button onClick={sendEvent} style={{ minWidth: "250px" }}>
               Send Event
             </button>
-            {/* {state.accessToken && (
-              <button onClick={sendCAPI} style={{ minWidth: "250px" }}>
-                Send CAPI
-              </button>
-            )} */}
           </div>
         </div>
       )}

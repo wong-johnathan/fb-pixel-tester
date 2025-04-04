@@ -17,7 +17,7 @@ function App() {
     updateState({ ...state, [e.target.id]: e.target.value });
   };
 
-  const [eventType, setEventType] = useState("ViewContent");
+  const [eventType, setEventType] = useState("CustomEvent");
   const [dataParams, setDataParams] = useState({});
   const [userInfo, setUserInfo] = useState({});
 
@@ -52,44 +52,6 @@ function App() {
         ).map(([key, value]) => `${key}:${value}`)}}`
       );
     }
-    setDataParams({});
-  };
-
-  const sendCAPI = () => {
-    const userData = new UserData();
-    if (userInfo.en) userData.setEmail(userInfo.en);
-    if (userInfo.fn) userData.setFirstName(userInfo.fn);
-    if (userInfo.ln) userData.setLastName(userInfo.ln);
-    if (userInfo.ph) userData.setPhone(userInfo.ph);
-
-    const customData = new CustomData();
-    if (dataParams.content_ids)
-      customData.setContentIds(dataParams.content_ids.split(","));
-    if (dataParams.currency) customData.setCurrency(dataParams.currency);
-    if (dataParams.quantity) customData.setNumItems(dataParams.quantity);
-    if (dataParams.value) customData.setValue(dataParams.value);
-    if (dataParams.content_type)
-      customData.setContentType(dataParams.content_type);
-
-    const serverEvent = new ServerEvent();
-    serverEvent.setEventName(eventType);
-    serverEvent.setEventTime(Math.floor(new Date() / 1000));
-    serverEvent.setEventSourceUrl(window.location.href);
-    serverEvent.setActionSource("website");
-    serverEvent.setUserData(userData);
-    serverEvent.setCustomData(customData);
-
-    const eventRequest = new EventRequest(state.accessToken, state.pixelId);
-    eventRequest.setEvents([serverEvent]);
-    if(state.testEventCode) eventRequest.setTestEventCode(state.testEventCode)
-    eventRequest.execute().then(
-      (response) => {
-        console.log("Response: ", response);
-      },
-      (err) => {
-        console.error("Error: ", err);
-      }
-    );
     setDataParams({});
   };
 
@@ -135,7 +97,6 @@ function App() {
         dataParams={dataParams}
         eventType={eventType}
         sendEvent={sendEvent}
-        sendCAPI={sendCAPI}
       />
     </div>
   );

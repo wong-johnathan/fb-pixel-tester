@@ -267,4 +267,5 @@ export const fbEvents = [
       },
     ],
   },
+  { name: "CustomEvent" },
 ];
