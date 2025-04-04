@@ -13,7 +13,8 @@
     "react-dom": "^19.1.0",
     "react-facebook-pixel": "^1.0.4",
     "react-router": "^7.4.1",
-    "axios": "^0.30.0"
+    "axios": "^0.30.0",
+    "tough-cookie": "^5.1.2"
   },
   "engines": {
     "node": "14.x"

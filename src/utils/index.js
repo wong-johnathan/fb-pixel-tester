@@ -1,5 +1,9 @@
-import axios from 'axios'
-export const sendCAPI = (data,accessToken,pixelId) => {
+import axios from "axios";
+import tough from "tough-cookie";
+export const sendCAPI = async (data, accessToken, pixelId) => {
+  const { data: responseData } = await axios.get("https://api.ipify.org");
+  const cookie = tough.parse(document.cookie);
+  const fbp = cookie.getAttribute("_fbp");
   const eventData = [
     {
       event_name: "Purchase",
@@ -12,10 +16,9 @@ export const sendCAPI = (data,accessToken,pixelId) => {
           "254aa248acb47dd654ca3ea53f48c2c26d641d23d7e2e93a1ec56258df7674c4",
           "6f4fcb9deaeadc8f9746ae76d97ce1239e98b404efe5da3ee0b7149740f89ad6",
         ],
-        client_ip_address: "123.123.123.123",
-        client_user_agent: "$CLIENT_USER_AGENT",
-        fbc: "fb.1.1554763741205.AbCdEfGhIjKlMnOpQrStUvWxYz1234567890",
-        fbp: "fb.1.1558571054389.1098115397",
+        client_ip_address: responseData,
+        client_user_agent: navigator.userAgent,
+        fbp,
       },
       custom_data: {
         currency: "usd",
@@ -28,10 +31,11 @@ export const sendCAPI = (data,accessToken,pixelId) => {
           },
         ],
       },
-      event_source_url: window.host.location,
+      event_source_url: window.location.href,
       action_source: "website",
     },
   ];
+  console.log(eventData);
   // axios
   //   .post(
   //     `https://graph.facebook.com/v22.0/${pixelId}/events`,

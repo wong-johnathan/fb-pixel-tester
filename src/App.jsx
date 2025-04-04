@@ -7,6 +7,7 @@ import UserDetailsInput from "./components/UserDetailsInput";
 import { NavLink, useNavigate } from "react-router";
 import { faker } from "@faker-js/faker";
 import axios from "axios";
+import {sendCAPI} from './utils'
 
 const prepareParamsData = (data) => {
   Object.keys(data).forEach((key) => {
@@ -123,7 +124,7 @@ function App() {
           <span dangerouslySetInnerHTML={{ __html: message }} />
         </>
       )}
-      
+      <button onClick={()=>sendCAPI()}>Test capi</button>
     </div>
   );
 }
