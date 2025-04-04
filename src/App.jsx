@@ -4,6 +4,8 @@ import { ConfigInput } from "./components/ConfigInput";
 import ReactPixel from "react-facebook-pixel";
 import EventDetailsInput from "./components/EventDetailsInput";
 import UserDetailsInput from "./components/UserDetailsInput";
+import { NavLink, useNavigate } from "react-router";
+import { faker } from "@faker-js/faker";
 
 export const prepareParamsData = (data) => {
   Object.keys(data).forEach((key) => {
@@ -15,6 +17,7 @@ export const prepareParamsData = (data) => {
 };
 
 function App() {
+  const navigate = useNavigate()
   const { state, updateState } = useContext(MetaContext);
   const handleUpdate = (e) => {
     updateState({ ...state, [e.target.id]: e.target.value });
@@ -95,6 +98,10 @@ function App() {
     }));
   };
 
+  const randomUrlNavigate = () =>{
+    navigate(`/${faker.string.uuid()}`)
+  }
+
   return (
     <div
       style={{
@@ -120,7 +127,12 @@ function App() {
         eventType={eventType}
         sendEvent={sendEvent}
         sendCustomEvent={sendCustomEvent}
-      /><hr/>
+      />
+      <hr />
+      <div style={{textAlign:"center"}}>
+        <button style={{width:"100%"}} onClick={randomUrlNavigate}>Random Url</button>
+      </div>
+      <hr />
       {message && (
         <>
           <span>User details are sent hashed..</span>
