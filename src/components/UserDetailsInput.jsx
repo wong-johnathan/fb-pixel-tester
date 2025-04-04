@@ -8,7 +8,7 @@ const UserDetailsInput = ({ onChange, userInfo, setUserInfo }) => {
       em: faker.internet.email(),
       fn: faker.person.firstName(),
       ln: faker.person.lastName(),
-      ph: faker.number.int({ min: 8, max: 15 }),
+      ph: faker.number.int({ min: 11111111, max: 999999999999999 }),
       external_id: faker.string.uuid(),
     });
   };
