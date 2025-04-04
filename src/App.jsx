@@ -29,7 +29,6 @@ function App() {
   const [message, setMessage] = useState();
 
   const sendEvent = ({ customData } = {}) => {
-    console.log(customData);
     const _dataParams = customData
       ? prepareParamsData(customData.dataParams)
       : prepareParamsData(dataParams);

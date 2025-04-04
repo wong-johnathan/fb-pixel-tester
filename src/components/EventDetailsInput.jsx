@@ -114,6 +114,7 @@ const EventDetailsInput = ({
               <>
                 <Input
                   label="CustomEvent name"
+                  id="customEventType"
                   minWidth="150px"
                   value={customEventName}
                   onChange={(e) => setCustomEventName(e.target.value)}
@@ -144,10 +145,12 @@ const EventDetailsInput = ({
                               fontStyle: "italics",
                               fontSize: "0.75rem",
                             }}
+                            htmlFor={`parameters-${index}-0`}
                           >
                             Parameter name:
                           </label>
                           <input
+                            id={`parameters-${index}-0`}
                             value={parameter[0] ?? ""}
                             onChange={(e) =>
                               handleParamterUpdate(index, 0, e.target.value)
@@ -163,6 +166,7 @@ const EventDetailsInput = ({
                               fontStyle: "italics",
                               fontSize: "0.75rem",
                             }}
+                            htmlFor={`parameters-${index}-1`}
                           >
                             Parameter value:
                           </label>
@@ -171,6 +175,7 @@ const EventDetailsInput = ({
                             onChange={(e) =>
                               handleParamterUpdate(index, 1, e.target.value)
                             }
+                            id={`parameters-${index}-1`}
                           />
                         </div>
                       </div>

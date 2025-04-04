@@ -1,6 +1,5 @@
 {
   "name": "fb-pixel",
-  "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -10,11 +9,9 @@
   },
   "dependencies": {
     "@faker-js/faker": "^9.6.0",
-    "js-cookie": "^3.0.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-facebook-pixel": "^1.0.4",
-    "facebook-nodejs-business-sdk": "^22.0.1",
     "react-router": "^7.4.1"
   },
   "engines": {
