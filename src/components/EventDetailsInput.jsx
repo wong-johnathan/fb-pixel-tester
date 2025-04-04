@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { fbEvents } from "../config/fbEvents";
 import Input from "./Input";
 import { MetaContext } from "../context/PixelContext";
+import {prepareParamsData} from '../App'
 
 const EventDetailsInput = ({
   handleEventSelect,
@@ -29,8 +30,15 @@ const EventDetailsInput = ({
   };
   
   const handleSendCustomEvent = ()=>{
+    const dataParams = {}
+    for(const parameter of parameters) dataParams[parameter[0]] = parameter[1]
+    sendCustomEvent({eventType:customEventName, dataParams:prepareParamsData(dataParams)})
     setParameters([[]]);
-    sendCustomEvent({eventType:customEventName})
+  }
+  
+  const handleSend = () =>{
+    if(eventType==='CustomEvent') handleSendCustomEvent();
+    else sendEvent()
   }
   
   return (
@@ -132,7 +140,7 @@ const EventDetailsInput = ({
                             Parameter name:
                           </label>
                           <input
-                            value={parameter[0]}
+                            value={parameter[0]??''}
                             onChange={(e) =>
                               handleParamterUpdate(index, 0, e.target.value)
                             }
@@ -151,7 +159,7 @@ const EventDetailsInput = ({
                             Parameter value:
                           </label>
                           <input
-                            value={parameter[1]}
+                            value={parameter[1]??''}
                             onChange={(e) =>
                               handleParamterUpdate(index, 1, e.target.value)
                             }
@@ -176,7 +184,7 @@ const EventDetailsInput = ({
                 </button>
               </>
             )}
-            <button onClick={sendEvent} style={{ minWidth: "250px" }}>
+            <button onClick={handleSend} style={{ minWidth: "250px" }}>
               Send Event
             </button>
           </div>

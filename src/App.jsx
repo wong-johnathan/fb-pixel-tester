@@ -26,7 +26,7 @@ function App() {
     updateState({ ...state, [e.target.id]: e.target.value });
   };
 
-  const [eventType, setEventType] = useState("CustomEvent");
+  const [eventType, setEventType] = useState("ViewContent");
   const [dataParams, setDataParams] = useState({});
   const [userInfo, setUserInfo] = useState({});
 
@@ -55,7 +55,30 @@ function App() {
     setDataParams({});
   };
 
-  const sendCustomEvent = (customData) => {};
+  const sendCustomEvent = (customData) => {
+    if (Object.keys(userInfo).length > 0) {
+      ReactPixel.init(state.pixelId, userInfo);
+      ReactPixel.track(customData.eventType, customData.dataParams);
+      console.log(
+        `Sending custom tracking event: ${customData.eventType}\nWith user details: {${Object.entries(
+          userInfo
+        ).map(
+          ([key, value]) => `${key}:${value}`
+        )}}\nWith data params: {${Object.entries(
+          customData.dataParams
+        ).map(([key, value]) => `${key}:${value}`)}}`
+      );
+    } else {
+      ReactPixel.init(state.pixelId);
+      ReactPixel.track(customData.eventType, customData.dataParams);
+      console.log(
+        `Sending custom tracking event: ${customData.eventType}\nWith no user details\nWith data params: {${Object.entries(
+          customData.dataParams
+        ).map(([key, value]) => `${key}:${value}`)}}`
+      );
+    }
+    setDataParams({});
+  };
 
   const handleEventSelect = (e) => {
     setEventType(e.target.value);
