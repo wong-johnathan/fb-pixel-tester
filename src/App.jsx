@@ -11,6 +11,15 @@ import {
   UserData,
 } from "facebook-nodejs-business-sdk";
 
+export const prepareParamsData = (data) => {
+  Object.keys(data).forEach((key) => {
+    if (key === "content_ids") {
+      data[key] = String(data[key]).split(",");
+    }
+  });
+  return data;
+};
+
 function App() {
   const { state, updateState } = useContext(MetaContext);
   const handleUpdate = (e) => {
@@ -20,15 +29,6 @@ function App() {
   const [eventType, setEventType] = useState("CustomEvent");
   const [dataParams, setDataParams] = useState({});
   const [userInfo, setUserInfo] = useState({});
-
-  const prepareParamsData = (data) => {
-    Object.keys(data).forEach((key) => {
-      if (key === "content_ids") {
-        data[key] = String(data[key]).split(",");
-      }
-    });
-    return data;
-  };
 
   const sendEvent = () => {
     if (Object.keys(userInfo).length > 0) {
@@ -54,6 +54,8 @@ function App() {
     }
     setDataParams({});
   };
+
+  const sendCustomEvent = (customData) => {};
 
   const handleEventSelect = (e) => {
     setEventType(e.target.value);
@@ -97,6 +99,7 @@ function App() {
         dataParams={dataParams}
         eventType={eventType}
         sendEvent={sendEvent}
+        sendCustomEvent={sendCustomEvent}
       />
     </div>
   );

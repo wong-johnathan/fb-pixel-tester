@@ -9,9 +9,11 @@ const EventDetailsInput = ({
   handleDataParams,
   sendEvent,
   dataParams,
+  sendCustomEvent
 }) => {
   const { state } = useContext(MetaContext);
   const [parameters, setParameters] = useState([[]]);
+  const [customEventName,setCustomEventName] = useState()
 
   const addParamter = () => {
     setParameters((prevState) => [...prevState, []]);
@@ -25,6 +27,12 @@ const EventDetailsInput = ({
       })
     );
   };
+  
+  const handleSendCustomEvent = ()=>{
+    setParameters([[]]);
+    sendCustomEvent({eventType:customEventName})
+  }
+  
   return (
     <div
       style={{
@@ -93,10 +101,17 @@ const EventDetailsInput = ({
               ))}
             {eventType === "CustomEvent" && (
               <>
+                <Input label="CustomEvent name" minWidth="150px" value={customEventName} onChange={(e)=>setCustomEventName(e.target.value)}/>
                 {parameters.map((parameter, index) => {
-                  console.log(parameters, index);
                   return (
-                    <React.Fragment>
+                    <div
+                      key={`paramters-${index}`}
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        columnGap: "0.5rem",
+                      }}
+                    >
                       <div
                         style={{
                           display: "flex",
@@ -135,14 +150,25 @@ const EventDetailsInput = ({
                           >
                             Parameter value:
                           </label>
-                          <input value={parameter[1]}
+                          <input
+                            value={parameter[1]}
                             onChange={(e) =>
                               handleParamterUpdate(index, 1, e.target.value)
-                            }/>
+                            }
+                          />
                         </div>
                       </div>
-                      <button>Del</button>
-                    </React.Fragment>
+                      <button
+                        style={{ height: "21.5px", alignSelf: "flex-end" }}
+                        onClick={() =>
+                          setParameters((prevState) =>
+                            prevState.filter((p, i) => i !== index)
+                          )
+                        }
+                      >
+                        Del
+                      </button>
+                    </div>
                   );
                 })}
                 <button onClick={addParamter} style={{ minWidth: "250px" }}>
