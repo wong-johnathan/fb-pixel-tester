@@ -3,10 +3,8 @@ import { createContext, useState } from "react";
 const MetaContext = createContext();
 
 export const initialState = {
-  accessToken: localStorage.getItem("accessToken") ?? "",
   pixelId: localStorage.getItem("pixelId") ?? "",
   testEventCode: localStorage.getItem("testEventCode") ?? "",
-  capiURL: localStorage.getItem("capiURL") ?? "",
 };
 
 const MetaProvider = ({ children }) => {

@@ -9,16 +9,10 @@ export const ConfigInput = ({ state, handleUpdate }) => {
         marginBottom: "0.5rem",
         justifyItems: "center",
         alignItems: "center",
-        gridTemplateRows: "repeat(2, 1fr)",
+        // gridTemplateRows: "repeat(2, 1fr)",
         gridTemplateColumns: "repeat(2, 1fr)",
       }}
     >
-      <Input
-        id="accessToken"
-        onChange={handleUpdate}
-        value={state.accessToken}
-        label="Access Token"
-      />
       <Input
         id="pixelId"
         onChange={handleUpdate}
@@ -30,12 +24,6 @@ export const ConfigInput = ({ state, handleUpdate }) => {
         onChange={handleUpdate}
         value={state.testEventCode}
         label="Event Test Code"
-      />
-      <Input
-        id="capiURL"
-        onChange={handleUpdate}
-        value={state.capiURL}
-        label="CAPI URL"
       />
     </div>
   );
