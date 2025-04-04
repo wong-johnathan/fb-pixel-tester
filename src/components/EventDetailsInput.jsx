@@ -1,4 +1,4 @@
-import { useContext,useState } from "react";
+import React,{ useContext, useState } from "react";
 import { fbEvents } from "../config/fbEvents";
 import Input from "./Input";
 import { MetaContext } from "../context/PixelContext";
@@ -11,9 +11,15 @@ const EventDetailsInput = ({
   dataParams,
 }) => {
   const { state } = useContext(MetaContext);
-  const [paramters,setParameters] = useState([])
+  const [parameters, setParameters] = useState([[]]);
 
-  const addParamter = () => {};
+  const addParamter = () => {
+    setParameters(prevState=>[...prevState,[]])
+  };
+  
+  const handleParamterUpdate = (index,type)=>{
+    
+  }
   return (
     <div
       style={{
@@ -82,32 +88,49 @@ const EventDetailsInput = ({
               ))}
             {eventType === "CustomEvent" && (
               <>
-                <div style={{ display: "flex", flexDirection: "row", columnGap:"0.5rem" }}>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <label
-                      style={{
-                        textAlign: "center",
-                        fontStyle: "italics",
-                        fontSize: "0.75rem",
-                      }}
-                    >
-                      Parameter name:
-                    </label>
-                    <input />
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <label
-                      style={{
-                        textAlign: "center",
-                        fontStyle: "italics",
-                        fontSize: "0.75rem",
-                      }}
-                    >
-                      Parameter value:
-                    </label>
-                    <input />
-                  </div>
-                </div>
+                {parameters.map((parameter, index) => {
+                  console.log(parameters,index)
+                  return (
+                    <React.Fragment>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          columnGap: "0.5rem",
+                        }}
+                      >
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          <label
+                            style={{
+                              textAlign: "center",
+                              fontStyle: "italics",
+                              fontSize: "0.75rem",
+                            }}
+                          >
+                            Parameter name:
+                          </label>
+                          <input value={parameter[0]} onChange={()=>handleParamterUpdate(index,"key")}/>
+                        </div>
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          <label
+                            style={{
+                              textAlign: "center",
+                              fontStyle: "italics",
+                              fontSize: "0.75rem",
+                            }}
+                          >
+                            Parameter value:
+                          </label>
+                          <input />
+                        </div>
+                      </div>
+                    </React.Fragment>
+                  );
+                })}
                 <button onClick={addParamter} style={{ minWidth: "250px" }}>
                   Add Parameter
                 </button>
