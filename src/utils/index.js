@@ -1,9 +1,10 @@
 import axios from "axios";
-import tough from "tough-cookie";
+import { Cookie } from "tough-cookie";
 export const sendCAPI = async (data, accessToken, pixelId) => {
   const { data: responseData } = await axios.get("https://api.ipify.org");
-  const cookie = tough.parse(document.cookie);
-  const fbp = cookie.getAttribute("_fbp");
+  const cookies = document.cookie.split(';').map(Cookie.parse)
+  const fbp = cookies.find(cookie=>cookie.key="_fbp");
+
   const eventData = [
     {
       event_name: "Purchase",
@@ -18,7 +19,7 @@ export const sendCAPI = async (data, accessToken, pixelId) => {
         ],
         client_ip_address: responseData,
         client_user_agent: navigator.userAgent,
-        fbp,
+        fbp:fbp.value,
       },
       custom_data: {
         currency: "usd",
