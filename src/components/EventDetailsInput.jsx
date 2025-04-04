@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { fbEvents } from "../config/fbEvents";
 import Input from "./Input";
 import { MetaContext } from "../context/PixelContext";
-import {prepareParamsData} from '../App'
 
 const EventDetailsInput = ({
   handleEventSelect,
@@ -10,11 +9,10 @@ const EventDetailsInput = ({
   handleDataParams,
   sendEvent,
   dataParams,
-  sendCustomEvent
 }) => {
   const { state } = useContext(MetaContext);
   const [parameters, setParameters] = useState([[]]);
-  const [customEventName,setCustomEventName] = useState()
+  const [customEventName, setCustomEventName] = useState();
 
   const addParamter = () => {
     setParameters((prevState) => [...prevState, []]);
@@ -28,19 +26,24 @@ const EventDetailsInput = ({
       })
     );
   };
-  
-  const handleSendCustomEvent = ()=>{
-    const dataParams = {}
-    for(const parameter of parameters) dataParams[parameter[0]] = parameter[1]
-    sendCustomEvent({eventType:customEventName, dataParams:prepareParamsData(dataParams)})
+
+  const handleSendCustomEvent = () => {
+    const dataParams = {};
+    for (const parameter of parameters) dataParams[parameter[0]] = parameter[1];
+    sendEvent({
+      customData: {
+        eventType: customEventName,
+        dataParams
+      },
+    });
     setParameters([[]]);
-  }
-  
-  const handleSend = () =>{
-    if(eventType==='CustomEvent') handleSendCustomEvent();
-    else sendEvent()
-  }
-  
+  };
+
+  const handleSend = () => {
+    if (eventType === "CustomEvent") handleSendCustomEvent();
+    else sendEvent();
+  };
+
   return (
     <div
       style={{
@@ -109,7 +112,12 @@ const EventDetailsInput = ({
               ))}
             {eventType === "CustomEvent" && (
               <>
-                <Input label="CustomEvent name" minWidth="150px" value={customEventName} onChange={(e)=>setCustomEventName(e.target.value)}/>
+                <Input
+                  label="CustomEvent name"
+                  minWidth="150px"
+                  value={customEventName}
+                  onChange={(e) => setCustomEventName(e.target.value)}
+                />
                 {parameters.map((parameter, index) => {
                   return (
                     <div
@@ -140,7 +148,7 @@ const EventDetailsInput = ({
                             Parameter name:
                           </label>
                           <input
-                            value={parameter[0]??''}
+                            value={parameter[0] ?? ""}
                             onChange={(e) =>
                               handleParamterUpdate(index, 0, e.target.value)
                             }
@@ -159,7 +167,7 @@ const EventDetailsInput = ({
                             Parameter value:
                           </label>
                           <input
-                            value={parameter[1]??''}
+                            value={parameter[1] ?? ""}
                             onChange={(e) =>
                               handleParamterUpdate(index, 1, e.target.value)
                             }
