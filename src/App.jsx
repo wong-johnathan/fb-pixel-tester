@@ -17,7 +17,7 @@ export const prepareParamsData = (data) => {
 };
 
 function App() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { state, updateState } = useContext(MetaContext);
   const handleUpdate = (e) => {
     updateState({ ...state, [e.target.id]: e.target.value });
@@ -28,25 +28,51 @@ function App() {
   const [userInfo, setUserInfo] = useState({});
   const [message, setMessage] = useState();
 
-  const sendEvent = () => {
+  const sendEvent = ({ customData = undefined }) => {
+    
+    const _eventType 
+    const dataParams = customData
+      ? customData.dataParams
+      : prepareParamsData(dataParams);
+
+    const startMessage = customData
+      ? `Sending tracking event: ${eventType}`
+      : `Sending custom event: ${customData.eventType}`;
+
+    const dataParamsMessage = `With data params: {${Object.entries(
+      dataParams
+    ).map(([key, value]) => `${key}:${value}`)}}`;
+
+    const userMessage = Object.keys(userInfo.length > 0)
+      ? `With user details: {${Object.entries(userInfo).map(
+          ([key, value]) => `${key}:${value}`
+        )}}`
+      : "With no user details";
+
+    const message = `${startMessage}<br/>${dataParamsMessage}<br/>${userMessage}`;
+
+    ReactPixel.init(
+      state.pixelId,
+      Object.keys(userInfo).length > 0 ? userInfo : undefined
+    );
+    
+
     if (Object.keys(userInfo).length > 0) {
       ReactPixel.init(state.pixelId, userInfo);
-      ReactPixel.track(eventType, prepareParamsData(dataParams));
+      ReactPixel.track(eventType, dataParams);
       setMessage(
-        `Sending tracking event: ${eventType}<br/>With user details: {${Object.entries(
-          userInfo
-        ).map(
+        `${startMessage}<br/>With user details: {${Object.entries(userInfo).map(
           ([key, value]) => `${key}:${value}`
-        )}}<br/>With data params: {${Object.entries(
-          prepareParamsData(dataParams)
-        ).map(([key, value]) => `${key}:${value}`)}}`
+        )}}<br/>With data params: {${Object.entries(dataParams).map(
+          ([key, value]) => `${key}:${value}`
+        )}}`
       );
     } else {
       ReactPixel.init(state.pixelId);
-      ReactPixel.track(eventType, prepareParamsData(dataParams));
+      ReactPixel.track(eventType, dataParams);
       setMessage(
-        `Sending tracking event: ${eventType}<br/>With no user details<br/>With data params: {${Object.entries(
-          prepareParamsData(dataParams)
+        `${startMessage}<br/>With no user details<br/>With data params: {${Object.entries(
+          dataParams
         ).map(([key, value]) => `${key}:${value}`)}}`
       );
     }
@@ -98,9 +124,9 @@ function App() {
     }));
   };
 
-  const randomUrlNavigate = () =>{
-    navigate(`/${faker.string.uuid()}`)
-  }
+  const randomUrlNavigate = () => {
+    navigate(`/${faker.string.uuid()}`);
+  };
 
   return (
     <div
@@ -129,8 +155,10 @@ function App() {
         sendCustomEvent={sendCustomEvent}
       />
       <hr />
-      <div style={{textAlign:"center"}}>
-        <button style={{width:"100%"}} onClick={randomUrlNavigate}>Random Url</button>
+      <div style={{ textAlign: "center" }}>
+        <button style={{ width: "100%" }} onClick={randomUrlNavigate}>
+          Random Url
+        </button>
       </div>
       <hr />
       {message && (
