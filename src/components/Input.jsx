@@ -30,7 +30,7 @@ const Input = ({
           style={{ flex: 1 }}
         />
       </div>
-      <span style={{ fontStyle: "italic", fontSize: "0.75rem", textAlign:"center" }}>
+      <span style={{ fontStyle: "italic", fontSize: "0.75rem", textAlign:"right" }}>
         {description}
       </span>
     </div>

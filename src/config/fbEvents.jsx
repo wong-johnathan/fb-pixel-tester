@@ -68,7 +68,8 @@ export const fbEvents = [
     description: "When content is viewed",
     parameters: [
       {
-        name: "content_id",
+        name: "content_ids",
+        description: "(seperate fields with ,)",
         type: "string",
       },
       {
