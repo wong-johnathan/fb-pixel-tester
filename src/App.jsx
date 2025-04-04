@@ -29,25 +29,26 @@ function App() {
   const [eventType, setEventType] = useState("ViewContent");
   const [dataParams, setDataParams] = useState({});
   const [userInfo, setUserInfo] = useState({});
+  const [message, setMessage] = useState();
 
   const sendEvent = () => {
     if (Object.keys(userInfo).length > 0) {
       ReactPixel.init(state.pixelId, userInfo);
       ReactPixel.track(eventType, prepareParamsData(dataParams));
-      console.log(
-        `Sending tracking event: ${eventType}\nWith user details: {${Object.entries(
+      setMessage(
+        `Sending tracking event: ${eventType}<br/>With user details: {${Object.entries(
           userInfo
         ).map(
           ([key, value]) => `${key}:${value}`
-        )}}\nWith data params: {${Object.entries(
+        )}}<br/>With data params: {${Object.entries(
           prepareParamsData(dataParams)
         ).map(([key, value]) => `${key}:${value}`)}}`
       );
     } else {
       ReactPixel.init(state.pixelId);
       ReactPixel.track(eventType, prepareParamsData(dataParams));
-      console.log(
-        `Sending tracking event: ${eventType}\nWith no user details\nWith data params: {${Object.entries(
+      setMessage(
+        `Sending tracking event: ${eventType}<br/>With no user details<br/>With data params: {${Object.entries(
           prepareParamsData(dataParams)
         ).map(([key, value]) => `${key}:${value}`)}}`
       );
@@ -59,20 +60,22 @@ function App() {
     if (Object.keys(userInfo).length > 0) {
       ReactPixel.init(state.pixelId, userInfo);
       ReactPixel.track(customData.eventType, customData.dataParams);
-      console.log(
-        `Sending custom tracking event: ${customData.eventType}\nWith user details: {${Object.entries(
-          userInfo
-        ).map(
+      setMessage(
+        `Sending custom tracking event: ${
+          customData.eventType
+        }<br/>With user details: {${Object.entries(userInfo).map(
           ([key, value]) => `${key}:${value}`
-        )}}\nWith data params: {${Object.entries(
-          customData.dataParams
-        ).map(([key, value]) => `${key}:${value}`)}}`
+        )}}<br/>With data params: {${Object.entries(customData.dataParams).map(
+          ([key, value]) => `${key}:${value}`
+        )}}`
       );
     } else {
       ReactPixel.init(state.pixelId);
       ReactPixel.track(customData.eventType, customData.dataParams);
-      console.log(
-        `Sending custom tracking event: ${customData.eventType}\nWith no user details\nWith data params: {${Object.entries(
+      setMessage(
+        `Sending custom tracking event: ${
+          customData.eventType
+        }<br/>With no user details<br/>With data params: {${Object.entries(
           customData.dataParams
         ).map(([key, value]) => `${key}:${value}`)}}`
       );
@@ -123,7 +126,14 @@ function App() {
         eventType={eventType}
         sendEvent={sendEvent}
         sendCustomEvent={sendCustomEvent}
-      />
+      /><hr/>
+      {message && (
+        <>
+          <span>User details are sent hashed..</span>
+          <br />
+          <span dangerouslySetInnerHTML={{ __html: message }} />
+        </>
+      )}
     </div>
   );
 }

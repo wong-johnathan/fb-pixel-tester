@@ -1,7 +1,17 @@
+import { faker } from "@faker-js/faker";
 import { userInfoFieldsJson } from "../config/userInfoJson";
 import Input from "./Input";
 
 const UserDetailsInput = ({ onChange, userInfo, setUserInfo }) => {
+  const handleRandomGenerate = () => {
+    setUserInfo({
+      em: faker.internet.email(),
+      fn: faker.person.firstName(),
+      ln: faker.person.lastName(),
+      ph: faker.number.int({ min: 8, max: 15 }),
+      external_id: faker.string.uuid(),
+    });
+  };
   return (
     <div
       style={{
@@ -36,6 +46,9 @@ const UserDetailsInput = ({ onChange, userInfo, setUserInfo }) => {
             value={userInfo[field.parameter]}
           />
         ))}
+        <button style={{ width: "100%" }} onClick={handleRandomGenerate}>
+          Generate Random
+        </button>
       </div>
       <button style={{ minWidth: "250px" }} onClick={() => setUserInfo({})}>
         Delete
