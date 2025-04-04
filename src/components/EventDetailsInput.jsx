@@ -1,4 +1,4 @@
-import React,{ useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { fbEvents } from "../config/fbEvents";
 import Input from "./Input";
 import { MetaContext } from "../context/PixelContext";
@@ -14,12 +14,17 @@ const EventDetailsInput = ({
   const [parameters, setParameters] = useState([[]]);
 
   const addParamter = () => {
-    setParameters(prevState=>[...prevState,[]])
+    setParameters((prevState) => [...prevState, []]);
   };
-  
-  const handleParamterUpdate = (index,type)=>{
-    
-  }
+
+  const handleParamterUpdate = (index, key, value) => {
+    setParameters((prevState) =>
+      prevState.map((parameter, i) => {
+        if (i === index) parameter[key] = value;
+        return parameter;
+      })
+    );
+  };
   return (
     <div
       style={{
@@ -89,7 +94,7 @@ const EventDetailsInput = ({
             {eventType === "CustomEvent" && (
               <>
                 {parameters.map((parameter, index) => {
-                  console.log(parameters,index)
+                  console.log(parameters, index);
                   return (
                     <React.Fragment>
                       <div
@@ -111,7 +116,12 @@ const EventDetailsInput = ({
                           >
                             Parameter name:
                           </label>
-                          <input value={parameter[0]} onChange={()=>handleParamterUpdate(index,"key")}/>
+                          <input
+                            value={parameter[0]}
+                            onChange={(e) =>
+                              handleParamterUpdate(index, 0, e.target.value)
+                            }
+                          />
                         </div>
                         <div
                           style={{ display: "flex", flexDirection: "column" }}
@@ -125,9 +135,13 @@ const EventDetailsInput = ({
                           >
                             Parameter value:
                           </label>
-                          <input />
+                          <input value={parameter[1]}
+                            onChange={(e) =>
+                              handleParamterUpdate(index, 1, e.target.value)
+                            }/>
                         </div>
                       </div>
+                      <button>Del</button>
                     </React.Fragment>
                   );
                 })}
