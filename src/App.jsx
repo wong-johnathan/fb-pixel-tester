@@ -1,15 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { MetaContext } from "./context/PixelContext";
 import { ConfigInput } from "./components/ConfigInput";
 import ReactPixel from "react-facebook-pixel";
 import EventDetailsInput from "./components/EventDetailsInput";
 import UserDetailsInput from "./components/UserDetailsInput";
-import {
-  CustomData,
-  EventRequest,
-  ServerEvent,
-  UserData,
-} from "facebook-nodejs-business-sdk";
 
 export const prepareParamsData = (data) => {
   Object.keys(data).forEach((key) => {
@@ -59,7 +53,7 @@ function App() {
   const sendCustomEvent = (customData) => {
     if (Object.keys(userInfo).length > 0) {
       ReactPixel.init(state.pixelId, userInfo);
-      ReactPixel.track(customData.eventType, customData.dataParams);
+      ReactPixel.trackCustom(customData.eventType, customData.dataParams);
       setMessage(
         `Sending custom tracking event: ${
           customData.eventType
@@ -71,7 +65,7 @@ function App() {
       );
     } else {
       ReactPixel.init(state.pixelId);
-      ReactPixel.track(customData.eventType, customData.dataParams);
+      ReactPixel.trackCustom(customData.eventType, customData.dataParams);
       setMessage(
         `Sending custom tracking event: ${
           customData.eventType
