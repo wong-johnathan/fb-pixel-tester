@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { MetaContext } from "./context/PixelContext";
 import { ConfigInput } from "./components/ConfigInput";
 import ReactPixel from "react-facebook-pixel";
@@ -6,6 +6,7 @@ import EventDetailsInput from "./components/EventDetailsInput";
 import UserDetailsInput from "./components/UserDetailsInput";
 import { NavLink, useNavigate } from "react-router";
 import { faker } from "@faker-js/faker";
+import axios from "axios";
 
 const prepareParamsData = (data) => {
   Object.keys(data).forEach((key) => {
@@ -122,6 +123,7 @@ function App() {
           <span dangerouslySetInnerHTML={{ __html: message }} />
         </>
       )}
+      
     </div>
   );
 }
