@@ -90,14 +90,17 @@ function App() {
   };
 
   const sendPixel = ({ isCustom, dataParams, eventType, eventID }) => {
-    ReactPixel.fbq(
+    ReactPixel.init(
       state.pixelId,
-      Object.keys(userInfo).length > 0 ? userInfo : undefined
+      Object.keys(userInfo).length > 0 ? userInfo : undefined,
+      { debug: true, autoConfig: false }
     );
 
     if (isCustom) {
-      ReactPixel.fbq(eventType, dataParams,{eventID});
-    } else {ReactPixel.fbq(eventType, dataParams, { eventID });}
+      ReactPixel.fbq("trackCustom", eventType, dataParams,{eventID});
+    } else {
+      ReactPixel.fbq("track", eventType, dataParams,{eventID});
+    }
   };
 
   const handleDataParams = (e) => {
