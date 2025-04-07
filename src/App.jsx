@@ -83,7 +83,6 @@ function App() {
   };
 
   const sendPixel = ({ isCustom, dataParams, eventType }) => {
-    console.log("called")
     ReactPixel.init(
       state.pixelId,
       Object.keys(userInfo).length > 0 ? userInfo : undefined
