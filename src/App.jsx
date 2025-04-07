@@ -31,6 +31,7 @@ function App() {
   const [message, setMessage] = useState();
 
   const sendEvent = ({ customData, type } = {}) => {
+
     const _dataParams = customData
       ? prepareParamsData(customData.dataParams)
       : prepareParamsData(dataParams);
@@ -44,7 +45,7 @@ function App() {
     ).map(([key, value]) => `${key}:${value}`)}}`;
 
     const userMessage = Object.keys(userInfo.length > 0)
-      ? `With user details: {${Object.entries(userInfo).map(
+      ? `User details are sent hashed<br>With user details: {${Object.entries(userInfo).map(
           ([key, value]) => `${key}:${value}`
         )}}`
       : "With no user details";
@@ -74,11 +75,6 @@ function App() {
         });
         handleSendCAPI();
     }
-    sendPixel({
-      isCustom: customData ? true : false,
-      dataParams: _dataParams,
-      eventType: customData ? customData.eventType : eventType,
-    });
     setDataParams({});
   };
 
@@ -87,6 +83,7 @@ function App() {
   };
 
   const sendPixel = ({ isCustom, dataParams, eventType }) => {
+    console.log("called")
     ReactPixel.init(
       state.pixelId,
       Object.keys(userInfo).length > 0 ? userInfo : undefined
@@ -124,7 +121,7 @@ function App() {
     sendCAPI(
       { userData: hashedUserInfo, dataParams, eventType },
       state.accessToken,
-      state.pixelId
+      state.pixelId,state.testEventCode
     );
   };
 
