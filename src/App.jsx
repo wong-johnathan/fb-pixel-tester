@@ -114,11 +114,10 @@ function App() {
   const handleSendCAPI = () => {
     const hashedUserInfo = {};
     Object.entries(userInfo).forEach(([key, value]) => {
-      hashedUserInfo[key] = sha256(String(value));
+      hashedUserInfo[key] = [sha256(String(value))];
     });
-
     sendCAPI(
-      { userData: hashedUserInfo, dataParams, eventType },
+      { userInfo: hashedUserInfo, dataParams, eventType },
       state.accessToken,
       state.pixelId,state.testEventCode
     );
