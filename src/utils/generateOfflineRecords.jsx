@@ -33,8 +33,10 @@ import {fbEvents} from "../config/fbEvents"
         
       };
        event.parameters.forEach(({name,type})=>{
-         if(type==='string') record[name] = faker.string.uuid();
-         else record[name] = Math.floor(Math.random*99)+1
+         if(name==='currency') record[name] = "USD";
+         else if(name==='content_type') record[name] = "product";
+         else if(type==='string') record[name] = faker.string.uuid();
+         else record[name] = Math.floor(Math.random()*99)+1
        })
       csvRows.push(Object.values(record));
     }
