@@ -4,10 +4,10 @@ import { ConfigInput } from "./components/ConfigInput";
 import ReactPixel from "react-facebook-pixel";
 import EventDetailsInput from "./components/EventDetailsInput";
 import UserDetailsInput from "./components/UserDetailsInput";
-import { NavLink, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { faker } from "@faker-js/faker";
-import axios from "axios";
-import {sendCAPI} from './utils'
+import { sendCAPI } from "./utils";
+import sha256 from "js-sha256";
 
 const prepareParamsData = (data) => {
   Object.keys(data).forEach((key) => {
@@ -85,6 +85,19 @@ function App() {
     navigate(`/${faker.string.uuid()}`);
   };
 
+  const handleSendCAPI = () => {
+    const hashedUserInfo = {};
+    Object.entries(userInfo).forEach(([key, value]) => {
+      hashedUserInfo[key] = sha256(String(value));
+    });
+
+    sendCAPI(
+      { userData: hashedUserInfo, dataParams, eventType },
+      state.accessToken,
+      state.pixelId
+    );
+  };
+
   return (
     <div
       style={{
@@ -124,7 +137,7 @@ function App() {
           <span dangerouslySetInnerHTML={{ __html: message }} />
         </>
       )}
-      <button onClick={()=>sendCAPI()}>Test capi</button>
+      <button onClick={handleSendCAPI}>Test capi</button>
     </div>
   );
 }

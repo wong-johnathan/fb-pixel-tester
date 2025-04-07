@@ -9,7 +9,7 @@ export const ConfigInput = ({ state, handleUpdate }) => {
         marginBottom: "0.5rem",
         justifyItems: "center",
         alignItems: "center",
-        // gridTemplateRows: "repeat(2, 1fr)",
+        gridTemplateRows: "repeat(2, 1fr)",
         gridTemplateColumns: "repeat(2, 1fr)",
       }}
     >
@@ -24,6 +24,12 @@ export const ConfigInput = ({ state, handleUpdate }) => {
         onChange={handleUpdate}
         value={state.testEventCode}
         label="Event Test Code"
+      />
+      <Input
+        id="accessToken"
+        onChange={handleUpdate}
+        value={state.accessToken}
+        label="Access Token"
       />
     </div>
   );
