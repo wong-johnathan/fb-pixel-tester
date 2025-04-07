@@ -22,7 +22,7 @@ export const sendCAPI = async (
         client_user_agent: navigator.userAgent,
         fbp: fbp.value,
       },
-      custom_data: { ...data.paramsParams },
+      custom_data: { ...data.dataParamsvigbuthucvgjdeernjgteubjfhrhiibr },
       event_source_url: window.location.href,
       action_source: "website",
     },
