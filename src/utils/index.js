@@ -44,5 +44,8 @@ export const sendCAPI = async (
       }
     )
     .then((response) => console.log(response))
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      console.error(error);
+      window.alert(`FAILED TO SEND CAPI: ${error.response.data.error.message}`);
+    });
 };
