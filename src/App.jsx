@@ -31,6 +31,7 @@ function App() {
   const [message, setMessage] = useState();
 
   const sendEvent = ({ customData, type } = {}) => {
+    const eventID = faker.string.uuid();
 
     const _dataParams = customData
       ? prepareParamsData(customData.dataParams)
@@ -45,9 +46,9 @@ function App() {
     ).map(([key, value]) => `${key}:${value}`)}}`;
 
     const userMessage = Object.keys(userInfo.length > 0)
-      ? `User details are sent hashed<br>With user details: {${Object.entries(userInfo).map(
-          ([key, value]) => `${key}:${value}`
-        )}}`
+      ? `User details are sent hashed<br>With user details: {${Object.entries(
+          userInfo
+        ).map(([key, value]) => `${key}:${value}`)}}`
       : "With no user details";
 
     let methodMessage =
@@ -62,18 +63,24 @@ function App() {
           isCustom: customData ? true : false,
           dataParams: _dataParams,
           eventType: customData ? customData.eventType : eventType,
+          eventID,
         });
         break;
       case "capi":
-        handleSendCAPI();
+        handleSendCAPI({
+          eventID,
+        });
         break;
       default:
         sendPixel({
           isCustom: customData ? true : false,
           dataParams: _dataParams,
           eventType: customData ? customData.eventType : eventType,
+          eventID,
         });
-        handleSendCAPI();
+        handleSendCAPI({
+          eventID,
+        });
     }
     setDataParams({});
   };
@@ -82,15 +89,15 @@ function App() {
     setEventType(e.target.value);
   };
 
-  const sendPixel = ({ isCustom, dataParams, eventType }) => {
-    ReactPixel.init(
+  const sendPixel = ({ isCustom, dataParams, eventType, eventID }) => {
+    ReactPixel.fbq(
       state.pixelId,
       Object.keys(userInfo).length > 0 ? userInfo : undefined
     );
 
     if (isCustom) {
-      ReactPixel.trackCustom(eventType, dataParams);
-    } else ReactPixel.track(eventType, dataParams);
+      ReactPixel.fbq(eventType, dataParams,{eventID});
+    } else {ReactPixel.fbq(eventType, dataParams, { eventID });}
   };
 
   const handleDataParams = (e) => {
@@ -111,7 +118,7 @@ function App() {
     navigate(`/${faker.string.uuid()}`);
   };
 
-  const handleSendCAPI = () => {
+  const handleSendCAPI = ({ eventId }) => {
     const hashedUserInfo = {};
     Object.entries(userInfo).forEach(([key, value]) => {
       hashedUserInfo[key] = [sha256(String(value))];
@@ -119,7 +126,9 @@ function App() {
     sendCAPI(
       { userInfo: hashedUserInfo, dataParams, eventType },
       state.accessToken,
-      state.pixelId,state.testEventCode
+      state.pixelId,
+      state.testEventCode,
+      eventId
     );
   };
 
