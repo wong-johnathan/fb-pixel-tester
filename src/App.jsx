@@ -121,7 +121,7 @@ function App() {
     navigate(`/${faker.string.uuid()}`);
   };
 
-  const handleSendCAPI = ({ eventId }) => {
+  const handleSendCAPI = ({ eventID }) => {
     const hashedUserInfo = {};
     Object.entries(userInfo).forEach(([key, value]) => {
       hashedUserInfo[key] = [sha256(String(value))];
@@ -131,7 +131,7 @@ function App() {
       state.accessToken,
       state.pixelId,
       state.testEventCode,
-      eventId
+      eventID
     );
   };
 
