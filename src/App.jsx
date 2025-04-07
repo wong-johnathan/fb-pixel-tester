@@ -176,7 +176,7 @@ function App() {
         </>
       )}
       <hr/>
-      <OfflineRecordGenerator/>
+      <OfflineRecordGenerator />
     </div>
   );
 }
