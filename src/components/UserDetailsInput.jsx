@@ -9,7 +9,6 @@ const UserDetailsInput = ({ onChange, userInfo, setUserInfo }) => {
       fn: faker.person.firstName(),
       ln: faker.person.lastName(),
       ph: faker.number.int({ min: 11111111, max: 999999999999999 }),
-      external_id: faker.string.uuid(),
     });
   };
   return (
@@ -46,13 +45,15 @@ const UserDetailsInput = ({ onChange, userInfo, setUserInfo }) => {
             value={userInfo[field.parameter]}
           />
         ))}
-        <button style={{ width: "100%" }} onClick={handleRandomGenerate}>
+      </div>
+      <div style={{ display: "flex", columnGap: "0.5rem" }}>
+        <button style={{ width: "250px" }} onClick={handleRandomGenerate}>
           Generate Random
         </button>
+        <button style={{ minWidth: "250px" }} onClick={() => setUserInfo({})}>
+          Delete
+        </button>
       </div>
-      <button style={{ minWidth: "250px" }} onClick={() => setUserInfo({})}>
-        Delete
-      </button>
     </div>
   );
 };

@@ -16,6 +16,5 @@ export const userInfoFieldsJson = [
     parameter: "ph",
     label: "Phone Number",
     type: "number",
-  },
-  { parameter: "external_id", label: "External ID" },
+  }
 ];
