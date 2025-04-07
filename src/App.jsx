@@ -30,7 +30,7 @@ function App() {
   const [userInfo, setUserInfo] = useState({});
   const [message, setMessage] = useState();
 
-  const sendEvent = ({ customData } = {}) => {
+  const sendEvent = ({ customData, type } = {}) => {
     const _dataParams = customData
       ? prepareParamsData(customData.dataParams)
       : prepareParamsData(dataParams);
@@ -49,22 +49,52 @@ function App() {
         )}}`
       : "With no user details";
 
-    const message = `${startMessage}<br/>${dataParamsMessage}<br/>${userMessage}`;
+    let methodMessage =
+      type === "both" ? "Sending CAPI & Pixel" : `Sending ${type}`;
+    const message = `${methodMessage}<br/>${startMessage}<br/>${dataParamsMessage}<br/>${userMessage}`;
 
-    ReactPixel.init(
-      state.pixelId,
-      Object.keys(userInfo).length > 0 ? userInfo : undefined
-    );
-
-    if (customData) {
-      ReactPixel.trackCustom(customData.eventType, _dataParams);
-    } else ReactPixel.track(eventType, _dataParams);
     setMessage(message);
+
+    switch (type) {
+      case "pixel":
+        sendPixel({
+          isCustom: customData ? true : false,
+          dataParams: _dataParams,
+          eventType: customData ? customData.eventType : eventType,
+        });
+        break;
+      case "capi":
+        handleSendCAPI();
+        break;
+      default:
+        sendPixel({
+          isCustom: customData ? true : false,
+          dataParams: _dataParams,
+          eventType: customData ? customData.eventType : eventType,
+        });
+        handleSendCAPI();
+    }
+    sendPixel({
+      isCustom: customData ? true : false,
+      dataParams: _dataParams,
+      eventType: customData ? customData.eventType : eventType,
+    });
     setDataParams({});
   };
 
   const handleEventSelect = (e) => {
     setEventType(e.target.value);
+  };
+
+  const sendPixel = ({ isCustom, dataParams, eventType }) => {
+    ReactPixel.init(
+      state.pixelId,
+      Object.keys(userInfo).length > 0 ? userInfo : undefined
+    );
+
+    if (isCustom) {
+      ReactPixel.trackCustom(eventType, dataParams);
+    } else ReactPixel.track(eventType, dataParams);
   };
 
   const handleDataParams = (e) => {
@@ -132,12 +162,9 @@ function App() {
       <hr />
       {message && (
         <>
-          <span>User details are sent hashed..</span>
-          <br />
           <span dangerouslySetInnerHTML={{ __html: message }} />
         </>
       )}
-      <button onClick={handleSendCAPI}>Test capi</button>
     </div>
   );
 }

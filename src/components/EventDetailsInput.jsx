@@ -27,21 +27,22 @@ const EventDetailsInput = ({
     );
   };
 
-  const handleSendCustomEvent = () => {
+  const handleSendCustomEvent = (type) => {
     const dataParams = {};
     for (const parameter of parameters) dataParams[parameter[0]] = parameter[1];
     sendEvent({
       customData: {
         eventType: customEventName,
-        dataParams
+        dataParams,
       },
+      type
     });
     setParameters([[]]);
   };
 
-  const handleSend = () => {
-    if (eventType === "CustomEvent") handleSendCustomEvent();
-    else sendEvent();
+  const handleSend = (type) => {
+    if (eventType === "CustomEvent") handleSendCustomEvent(type);
+    else sendEvent({type});
   };
 
   return (
@@ -197,9 +198,26 @@ const EventDetailsInput = ({
                 </button>
               </>
             )}
-            <button onClick={handleSend} style={{ minWidth: "250px" }}>
-              Send Event
-            </button>
+            <div style={{ display: "flex", columnGap: "0.5rem" }}>
+              <button
+                onClick={() => handleSend("pixel")}
+                style={{ minWidth: "150px" }}
+              >
+                Send Pixel Event
+              </button>
+              <button
+                onClick={() => handleSend("capi")}
+                style={{ minWidth: "150px" }}
+              >
+                Send CAPI
+              </button>
+              <button
+                onClick={() => handleSend("both")}
+                style={{ minWidth: "150px" }}
+              >
+                Send Both
+              </button>
+            </div>
           </div>
         </div>
       )}

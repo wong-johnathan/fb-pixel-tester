@@ -5,6 +5,7 @@ const MetaContext = createContext();
 export const initialState = {
   pixelId: localStorage.getItem("pixelId") ?? "",
   testEventCode: localStorage.getItem("testEventCode") ?? "",
+  accessToken: localStorage.getItem("accessToken") ?? "",
 };
 
 const MetaProvider = ({ children }) => {
