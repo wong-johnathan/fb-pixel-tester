@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
- const generateOfflineRecords = ({numRecords,event_name}) => {
+import {fbEvents} from "../config/fbEvents"
+ const generateOfflineRecords = ({numRecords,eventType}) => {
     // Define the CSV headers
     const headers = [
       'email',
@@ -12,6 +13,10 @@ import { faker } from "@faker-js/faker";
       'event_name',
       'event_time'
     ];
+   
+   const event = fbEvents.find(fbEvent=>fbEvent.name===eventType);
+   console.log(event)
+   headers.push(...event.parameters.map(event=>event.name))
     // Generate the CSV data
     const csvRows = [];
     for (let i = 0; i < numRecords; i++) {
@@ -23,9 +28,14 @@ import { faker } from "@faker-js/faker";
         doby: faker.date.past().getFullYear() - Math.floor(Math.random() * 50), // Random year between 50 years ago and now
         gen: Math.random() < 0.5 ? 'F' : 'M', // Randomly select F or M
         age: Math.floor(Math.random() * 80) + 18, // Random age between 18 and 98
-        event_name: 'Purchase',
+        event_name: eventType,
         event_time: new Date(faker.date.recent()).toISOString()
+        
       };
+       event.parameters.forEach(({name,type})=>{
+         if(type==='string') record[name] = faker.string.uuid();
+         else record[name] = Math.floor(Math.random*99)+1
+       })
       csvRows.push(Object.values(record));
     }
     // Add the headers to the CSV data

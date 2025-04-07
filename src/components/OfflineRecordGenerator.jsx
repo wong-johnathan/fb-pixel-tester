@@ -6,7 +6,7 @@ export const OfflineRecordGenerator = () => {
   const [numRecords, setNumRecords] = useState(10);
   const [eventType, setEventType] = useState("Purchase");
   const handleGenerateCSV = () => {
-    generateOfflineRecords({ numRecords, event_name: "Purchase" });
+    generateOfflineRecords({ numRecords, eventType });
     alert("CSV Generated and downloaded");
   };
   return (
@@ -40,7 +40,7 @@ export const OfflineRecordGenerator = () => {
           <label htmlFor="eventType">Event Type:</label>
           <select
             id="eventType"
-            onChange={(e) => setEventType(e)}
+            onChange={(e) => setEventType(e.target.value)}
             value={eventType}
             style={{ height: "21.5px", flex: 1 }}
           >
