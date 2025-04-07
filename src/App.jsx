@@ -8,6 +8,7 @@ import { useNavigate } from "react-router";
 import { faker } from "@faker-js/faker";
 import { sendCAPI } from "./utils";
 import sha256 from "js-sha256";
+import OfflineRecordGenerator from './components/OfflineRecordGenerator';
 
 const prepareParamsData = (data) => {
   Object.keys(data).forEach((key) => {
@@ -174,6 +175,8 @@ function App() {
           <span dangerouslySetInnerHTML={{ __html: message }} />
         </>
       )}
+      <hr/>
+      <OfflineRecordGenerator/>
     </div>
   );
 }
