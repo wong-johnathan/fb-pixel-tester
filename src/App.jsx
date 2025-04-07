@@ -69,6 +69,7 @@ function App() {
       case "capi":
         handleSendCAPI({
           eventID,
+          dataParams: _dataParams,
         });
         break;
       default:
@@ -80,6 +81,7 @@ function App() {
         });
         handleSendCAPI({
           eventID,
+          dataParams: _dataParams,
         });
     }
     setDataParams({});
@@ -97,9 +99,9 @@ function App() {
     );
 
     if (isCustom) {
-      ReactPixel.fbq("trackCustom", eventType, dataParams,{eventID});
+      ReactPixel.fbq("trackCustom", eventType, dataParams, { eventID });
     } else {
-      ReactPixel.fbq("track", eventType, dataParams,{eventID});
+      ReactPixel.fbq("track", eventType, dataParams, { eventID });
     }
   };
 
@@ -121,7 +123,7 @@ function App() {
     navigate(`/${faker.string.uuid()}`);
   };
 
-  const handleSendCAPI = ({ eventID }) => {
+  const handleSendCAPI = ({ eventID, dataParams }) => {
     const hashedUserInfo = {};
     Object.entries(userInfo).forEach(([key, value]) => {
       hashedUserInfo[key] = [sha256(String(value))];
