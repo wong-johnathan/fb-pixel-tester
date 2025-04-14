@@ -11,7 +11,7 @@ export const OfflineRecordGenerator = () => {
   };
   return (
     <React.Fragment>
-      <h4>Offline record generator</h4>
+      <h4>Offline Custom Event Generator (CSV Format)</h4>
       <div
         style={{
           display: "grid",

@@ -31,6 +31,12 @@ export const ConfigInput = ({ state, handleUpdate }) => {
         value={state.accessToken}
         label="Access Token"
       />
+      <Input
+        id="catalogLink"
+        onChange={handleUpdate}
+        value={state.catalogLink}
+        label="Catalog Link"
+      />
     </div>
   );
 };
