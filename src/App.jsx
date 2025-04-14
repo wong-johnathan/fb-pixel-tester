@@ -26,7 +26,6 @@ function App() {
   const handleUpdate = (e) => {
     updateState({ ...state, [e.target.id]: e.target.value });
   };
-
   const [eventType, setEventType] = useState("ViewContent");
   const [dataParams, setDataParams] = useState({});
   const [userInfo, setUserInfo] = useState({});

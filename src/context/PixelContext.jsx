@@ -36,6 +36,7 @@ const MetaProvider = ({ children }) => {
       }
     });
   }, [state.catalogLink]);
+  
 
   return (
     <MetaContext.Provider value={{ state, updateState }}>

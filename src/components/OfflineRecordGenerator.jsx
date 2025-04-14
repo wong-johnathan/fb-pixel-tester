@@ -1,12 +1,18 @@
 import generateOfflineRecords from "../utils/generateOfflineRecords";
 import Input from "./Input";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { fbEvents } from "../config/fbEvents";
+import { MetaContext } from "../context/PixelContext";
 export const OfflineRecordGenerator = () => {
+  const { state } = useContext(MetaContext);
   const [numRecords, setNumRecords] = useState(10);
   const [eventType, setEventType] = useState("Purchase");
   const handleGenerateCSV = () => {
-    generateOfflineRecords({ numRecords, eventType });
+    generateOfflineRecords({
+      numRecords,
+      eventType,
+      catalogContentIDs: state.catalogContentIDs,
+    });
     alert("CSV Generated and downloaded");
   };
   return (
