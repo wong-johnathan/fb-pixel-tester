@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import csvToJson from "csvtojson";
 
 const MetaContext = createContext();
 
@@ -8,7 +9,7 @@ export const initialState = {
   testEventCode: localStorage.getItem("testEventCode") ?? "",
   accessToken: localStorage.getItem("accessToken") ?? "",
   catalogLink: localStorage.getItem("catalogLink") ?? "",
-  catalogContentIDs: []
+  catalogContentIDs: [],
 };
 
 const MetaProvider = ({ children }) => {
@@ -21,12 +22,20 @@ const MetaProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    axios
-      .get(
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpRjt0z1aUeaFGcUiz5RTx3mnc57pGCCCUnIAV0oLPKlf68knWu62L7EUcwXqgf_9DjIdEdPVuIaj8/pub?gid=0&single=true&output=csv"
-      )
-      .then((response) => console.log(response.data));
-  }, []);
+    axios.get(state.catalogLink ?? "").then((response) => {
+      if (response.data) {
+        csvToJson()
+          .fromString(String(response.data))
+          .then((data) => {
+            if (Array.isArray(data))
+              setState({
+                ...state,
+                catalogContentIDs: data.map((data) => data.id),
+              });
+          });
+      }
+    });
+  }, [state.catalogLink]);
 
   return (
     <MetaContext.Provider value={{ state, updateState }}>

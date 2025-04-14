@@ -1,6 +1,9 @@
 import { faker } from "@faker-js/faker";
 import {fbEvents} from "../config/fbEvents"
+import {useContext} from 'react'
+import MetaContext from '../'
  const generateOfflineRecords = ({numRecords,eventType}) => {
+   const {catalogContentIDs} = useContext(MetaContext)
     // Define the CSV headers
     const headers = [
       'email',
@@ -15,7 +18,6 @@ import {fbEvents} from "../config/fbEvents"
     ];
    
    const event = fbEvents.find(fbEvent=>fbEvent.name===eventType);
-   console.log(event)
    headers.push(...event.parameters.map(event=>event.name))
     // Generate the CSV data
     const csvRows = [];
