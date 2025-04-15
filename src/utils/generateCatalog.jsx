@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import fs from "fs";
 
 const generateCatalog = ({ numRecords }) => {
+  console.log(numRecords)
   // Define the CSV headers
   const headers = [
     "id",
