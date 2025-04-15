@@ -1,10 +1,11 @@
 import { useContext, useState } from "react";
 import { MetaContext } from "../context/PixelContext";
-import { useParams, NavLink } from "react-router";
+import { useParams, NavLink, useNavigate } from "react-router";
 import UserDetailsInput from "./UserDetailsInput";
 import { sendPixel } from "../utils";
 import { faker } from "@faker-js/faker";
 const Product = () => {
+  const navigate = useNavigate()
   const { state } = useContext(MetaContext);
 
   const [userInfo, setUserInfo] = useState({});
@@ -66,6 +67,11 @@ const Product = () => {
     });
   };
 
+  const handleRandomProduct = () => {
+    const randomIndex = Math.floor(Math.random() * state.catalogContent.length);
+    navigate(`/product/${state.catalogContent[randomIndex].id}`);
+  };
+
   if (!content) return "No catalog items found";
   return (
     <div
@@ -92,6 +98,7 @@ const Product = () => {
       <p>{content.price}</p>
       <div style={{ display: "flex", columnGap: "0.25rem" }}>
         <NavLink to={window.location.origin}>Back</NavLink>
+        <button onClick={handleRandomProduct}>Random Product</button>
         <button onClick={handleAddToCart}>Add to cart</button>
         <button onClick={handlePurchase}>Purchase</button>
       </div>
