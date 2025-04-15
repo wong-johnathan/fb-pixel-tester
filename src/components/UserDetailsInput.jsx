@@ -51,7 +51,7 @@ const UserDetailsInput = ({ onChange, userInfo, setUserInfo }) => {
         </button>
       </div>
       <button style={{ minWidth: "250px" }} onClick={() => setUserInfo({})}>
-        Delete
+        Clear user info
       </button>
     </div>
   );

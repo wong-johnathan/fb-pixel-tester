@@ -27,6 +27,13 @@ const Product = () => {
     };
     sendPixel({
       dataParams,
+      eventType: "View",
+      eventID,
+      pixelId: state.pixelId,
+      userInfo,
+    });
+    sendPixel({
+      dataParams,
       eventType: "AddToCart",
       eventID,
       pixelId: state.pixelId,
@@ -43,6 +50,13 @@ const Product = () => {
       currency,
       value: price,
     };
+    sendPixel({
+      dataParams,
+      eventType: "View",
+      eventID,
+      pixelId: state.pixelId,
+      userInfo,
+    });
     sendPixel({
       dataParams,
       eventType: "Purchase",

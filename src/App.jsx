@@ -10,7 +10,6 @@ import sha256 from "js-sha256";
 import OfflineRecordGenerator from "./components/OfflineRecordGenerator";
 import axios from "axios";
 
-
 const prepareParamsData = (data) => {
   Object.keys(data).forEach((key) => {
     if (key === "content_ids") {
@@ -66,7 +65,7 @@ function App() {
           eventType: customData ? customData.eventType : eventType,
           eventID,
           pixelId: state.pixelId,
-          userInfo
+          userInfo,
         });
         break;
       case "capi":
@@ -82,7 +81,7 @@ function App() {
           eventType: customData ? customData.eventType : eventType,
           eventID,
           pixelId: state.pixelId,
-          userInfo
+          userInfo,
         });
         handleSendCAPI({
           eventID,
@@ -128,6 +127,11 @@ function App() {
     );
   };
 
+  const randomCatalogItem = () => {
+    const randomIndex = Math.floor(Math.random() * state.catalogContent.length);
+    navigate(`/product/${state.catalogContent[randomIndex].id}`);
+  };
+
   return (
     <div
       style={{
@@ -163,10 +167,18 @@ function App() {
       {message && (
         <>
           <span dangerouslySetInnerHTML={{ __html: message }} />
+          <hr />
         </>
       )}
-      <hr />
       <OfflineRecordGenerator />
+      <hr />
+      {state.catalogContent.length > 0 && (
+        <div style={{ textAlign: "center" }}>
+          <button style={{ width: "100%" }} onClick={randomCatalogItem}>
+            Go to random catalog item
+          </button>
+        </div>
+      )}
     </div>
   );
 }
