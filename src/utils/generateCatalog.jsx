@@ -55,8 +55,6 @@ const generateCatalog = ({ numRecords }) => {
   // Clean up
   URL.revokeObjectURL(url);
 
-  generateCatalogLanguageFeed(csvData, "fi","fi_FI");
-  generateCatalogLanguageFeed(csvData, "ko","ko_KO");
   generateCatalogLanguageFeed(csvData, "ms","ms_MY");
   generateCatalogLanguageFeed(csvData, "tl","tl_XX");
 };
@@ -97,7 +95,6 @@ const generateCatalogLanguageFeed = async (data, language,override) => {
   csvData.unshift(headers);
   // Convert the CSV data to a string
   const csvString = csvData.map((row) => row.join(",")).join("\n");
-
   // Export the CSV file
   // Create a blob with the CSV data
   const blob = new Blob([csvString], { type: "text/csv; charset=utf-8" });

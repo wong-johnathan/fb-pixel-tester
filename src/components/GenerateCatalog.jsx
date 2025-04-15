@@ -27,7 +27,7 @@ const GenerateCatalog = () => {
         />
 
         <button onClick={() => generateCatalog({numRecords})}>
-          Generate Catalog (Will generate 4 language feed too)
+          Generate Catalog (Will generate bahasa and taglog feed)
         </button>
       </div>
     </div>
