@@ -63,7 +63,7 @@ const generateOfflineRecords = ({
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = "output.csv";
+  a.download = "offlineRecord.csv";
   a.click();
   // Clean up
   URL.revokeObjectURL(url);

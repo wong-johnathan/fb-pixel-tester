@@ -9,6 +9,7 @@ import { sendCAPI, sendPixel } from "./utils";
 import sha256 from "js-sha256";
 import OfflineRecordGenerator from "./components/OfflineRecordGenerator";
 import axios from "axios";
+import GenerateCatalog from "./components/GenerateCatalog";
 
 const prepareParamsData = (data) => {
   Object.keys(data).forEach((key) => {
@@ -172,6 +173,9 @@ function App() {
         </>
       )}
       <OfflineRecordGenerator />
+      <hr/>
+      
+      <GenerateCatalog />
       <hr />
       {state.catalogContent.length > 0 && (
         <div style={{ textAlign: "center" }}>
