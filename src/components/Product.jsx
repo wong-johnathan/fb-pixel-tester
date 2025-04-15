@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { MetaContext } from "../context/PixelContext";
 import { useParams, NavLink, useNavigate } from "react-router";
 import UserDetailsInput from "./UserDetailsInput";
@@ -7,10 +7,20 @@ import { faker } from "@faker-js/faker";
 const Product = () => {
   const navigate = useNavigate()
   const { state } = useContext(MetaContext);
+  const [loading,setLoading] = useState(true);
 
   const [userInfo, setUserInfo] = useState({});
   const { id } = useParams();
   const content = state.catalogContent.find((catalog) => catalog.id === id);
+  useEffect(()=>{
+    if(!content) return
+    setLoading(true)
+    const img = new Image();
+    img.src = content.image_link
+    img.onload = () => {
+      setLoading(false);
+    };
+  },[id,content])
   const handleUserInfo = (e) => {
     setUserInfo((prevState) => ({
       ...prevState,
@@ -93,7 +103,7 @@ const Product = () => {
         setUserInfo={setUserInfo}
       />
       <h3>{content.title}</h3>
-      <img height="400px" width="400px" src={content.image_link} />
+      {loading ? "Loading Image...":<img height="400px" width="400px" src={content.image_link} />}
       <p>{content.description}</p>
       <p>{content.price}</p>
       <div style={{ display: "flex", columnGap: "0.25rem" }}>
