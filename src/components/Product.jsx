@@ -27,7 +27,7 @@ const Product = () => {
     };
     sendPixel({
       dataParams,
-      eventType: "View",
+      eventType: "ViewContent",
       eventID,
       pixelId: state.pixelId,
       userInfo,
@@ -52,7 +52,7 @@ const Product = () => {
     };
     sendPixel({
       dataParams,
-      eventType: "View",
+      eventType: "ViewContent",
       eventID,
       pixelId: state.pixelId,
       userInfo,

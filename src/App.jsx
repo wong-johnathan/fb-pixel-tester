@@ -110,6 +110,7 @@ function App() {
   };
 
   const randomUrlNavigate = () => {
+    setMessage();
     navigate(`/${faker.string.uuid()}`);
   };
 
