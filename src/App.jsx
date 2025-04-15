@@ -1,15 +1,15 @@
 import { useContext, useState, useEffect } from "react";
 import { MetaContext } from "./context/PixelContext";
 import { ConfigInput } from "./components/ConfigInput";
-import ReactPixel from "react-facebook-pixel";
 import EventDetailsInput from "./components/EventDetailsInput";
 import UserDetailsInput from "./components/UserDetailsInput";
 import { useNavigate } from "react-router";
 import { faker } from "@faker-js/faker";
-import { sendCAPI } from "./utils";
+import { sendCAPI, sendPixel } from "./utils";
 import sha256 from "js-sha256";
 import OfflineRecordGenerator from "./components/OfflineRecordGenerator";
 import axios from "axios";
+
 
 const prepareParamsData = (data) => {
   Object.keys(data).forEach((key) => {
@@ -65,6 +65,8 @@ function App() {
           dataParams: _dataParams,
           eventType: customData ? customData.eventType : eventType,
           eventID,
+          pixelId: state.pixelId,
+          userInfo
         });
         break;
       case "capi":
@@ -79,6 +81,8 @@ function App() {
           dataParams: _dataParams,
           eventType: customData ? customData.eventType : eventType,
           eventID,
+          pixelId: state.pixelId,
+          userInfo
         });
         handleSendCAPI({
           eventID,
@@ -90,20 +94,6 @@ function App() {
 
   const handleEventSelect = (e) => {
     setEventType(e.target.value);
-  };
-
-  const sendPixel = ({ isCustom, dataParams, eventType, eventID }) => {
-    ReactPixel.init(
-      state.pixelId,
-      Object.keys(userInfo).length > 0 ? userInfo : undefined,
-      { debug: true, autoConfig: false }
-    );
-
-    if (isCustom) {
-      ReactPixel.fbq("trackCustom", eventType, dataParams, { eventID });
-    } else {
-      ReactPixel.fbq("track", eventType, dataParams, { eventID });
-    }
   };
 
   const handleDataParams = (e) => {

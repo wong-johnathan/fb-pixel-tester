@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Cookie } from "tough-cookie";
+import ReactPixel from "react-facebook-pixel";
 export const sendCAPI = async (
   data,
   accessToken,
@@ -49,3 +50,18 @@ export const sendCAPI = async (
       window.alert(`FAILED TO SEND CAPI: ${error.response.data.error.message}`);
     });
 };
+
+export const sendPixel = ({ isCustom, dataParams, eventType, eventID, pixelId, userInfo }) => {
+  ReactPixel.init(
+    pixelId,
+    Object.keys(userInfo).length > 0 ? userInfo : undefined,
+    { debug: true, autoConfig: false }
+  );
+
+  if (isCustom) {
+    ReactPixel.fbq("trackCustom", eventType, dataParams, { eventID });
+  } else {
+    ReactPixel.fbq("track", eventType, dataParams, { eventID });
+  }
+};
+
