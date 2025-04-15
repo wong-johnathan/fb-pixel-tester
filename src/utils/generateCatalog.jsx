@@ -66,10 +66,10 @@ const generateCatalogLanguageFeed = async (data, language) => {
   const csvData = [];
   const translator = window.openGoogleTranslator;
   const languageName = window.openGoogleTranslator.supportedLanguages()[language]
-  // console.log(window.openGoogleTranslator.supportedLanguages())
   const titles = [];
   const descriptions = [];
-  data.splice(1).forEach((tuple) => {
+  const [,...toTranslateData] = data
+  toTranslateData.forEach((tuple) => {
     titles.push(tuple[1]);
     descriptions.push(tuple[2]);
   });
@@ -83,19 +83,20 @@ const generateCatalogLanguageFeed = async (data, language) => {
     fromLanguage: "en",
     toLanguage: language,
   });
+  console.log("---------Translating----------");
+  console.log(data,translatedTitles,translatedDescriptions)
   for (let i = 1; i < data.length; i++) {
     const catalogItem = data[i];
     csvData.push(
       Object.values({
         id: catalogItem[0],
-        title: titles[i],
-        description: descriptions[i],
+        title: translatedTitles[i].translation,
+        description: translatedDescriptions[i].translation,
       })
     );
   }
   // Add the headers to the CSV data
   csvData.unshift(headers);
-
   // Convert the CSV data to a string
   const csvString = csvData.map((row) => row.join(",")).join("\n");
 
