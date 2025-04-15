@@ -55,14 +55,14 @@ const generateCatalog = ({ numRecords }) => {
   // Clean up
   URL.revokeObjectURL(url);
 
-  generateCatalogLanguageFeed(csvData, "ko");
-  generateCatalogLanguageFeed(csvData, "fi");
-  generateCatalogLanguageFeed(csvData, "ms");
-  generateCatalogLanguageFeed(csvData, "tl");
+  generateCatalogLanguageFeed(csvData, "fi","fi_FI");
+  generateCatalogLanguageFeed(csvData, "ko","ko_KO");
+  generateCatalogLanguageFeed(csvData, "ms","ms_MY");
+  generateCatalogLanguageFeed(csvData, "tl","tl_XX");
 };
 
-const generateCatalogLanguageFeed = async (data, language) => {
-  const headers = ["id", "title", "description"];
+const generateCatalogLanguageFeed = async (data, language,override) => {
+  const headers = ["id", "title", "description","override"];
   const csvData = [];
   const translator = window.openGoogleTranslator;
   const languageName = window.openGoogleTranslator.supportedLanguages()[language]
@@ -83,15 +83,13 @@ const generateCatalogLanguageFeed = async (data, language) => {
     fromLanguage: "en",
     toLanguage: language,
   });
-  console.log("---------Translating----------");
-  console.log(data,translatedTitles,translatedDescriptions)
-  for (let i = 1; i < data.length; i++) {
-    const catalogItem = data[i];
+  for (let i = 0; i < toTranslateData.length; i++) {
     csvData.push(
       Object.values({
-        id: catalogItem[0],
-        title: translatedTitles[i].translation,
-        description: translatedDescriptions[i].translation,
+        id: toTranslateData[i][0],
+        title: translatedTitles[i].translation.replaceAll(','),
+        description: translatedDescriptions[i].translation.replaceAll(','),
+        override
       })
     );
   }
@@ -102,7 +100,7 @@ const generateCatalogLanguageFeed = async (data, language) => {
 
   // Export the CSV file
   // Create a blob with the CSV data
-  const blob = new Blob([csvString], { type: "text/csv" });
+  const blob = new Blob([csvString], { type: "text/csv; charset=utf-8" });
   // Create a link to download the CSV file
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
