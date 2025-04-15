@@ -41,45 +41,75 @@ const generateCatalog = ({ numRecords }) => {
   // Add the headers to the CSV data
   csvData.unshift(headers);
   // Convert the CSV data to a string
-  //   const csvString = csvData.map((row) => row.join(",")).join("\n");
+  const csvString = csvData.map((row) => row.join(",")).join("\n");
 
-  //   // Export the CSV file
-  //     // Create a blob with the CSV data
-  //   const blob = new Blob([csvString], { type: "text/csv" });
-  //   // Create a link to download the CSV file
-  //   const url = URL.createObjectURL(blob);
-  //   const a = document.createElement("a");
-  //   a.href = url;
-  //   a.download = "catalog.csv";
-  //   a.click();
-  //   // Clean up
-  //   URL.revokeObjectURL(url);
+  // Export the CSV file
+  // Create a blob with the CSV data
+  const blob = new Blob([csvString], { type: "text/csv" });
+  // Create a link to download the CSV file
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "catalog.csv";
+  a.click();
+  // Clean up
+  URL.revokeObjectURL(url);
 
-  generateCatalogLanguageFeed(csvData);
+  generateCatalogLanguageFeed(csvData, "ko");
+  generateCatalogLanguageFeed(csvData, "fi");
+  generateCatalogLanguageFeed(csvData, "ms");
+  generateCatalogLanguageFeed(csvData, "tl");
 };
 
-const generateCatalogLanguageFeed = async (data) => {
+const generateCatalogLanguageFeed = async (data, language) => {
   const headers = ["id", "title", "description"];
   const csvData = [];
   const translator = window.openGoogleTranslator;
-  const titles = []
-  const descriptions = []
-  data.forEach(tuple=>{
-    titles.push(tuple[0])
-    descriptions.push(tuple[1])
-  })
-  const translatedTitles = 
+  const languageName = window.openGoogleTranslator.supportedLanguages()[language]
+  // console.log(window.openGoogleTranslator.supportedLanguages())
+  const titles = [];
+  const descriptions = [];
+  data.splice(1).forEach((tuple) => {
+    titles.push(tuple[1]);
+    descriptions.push(tuple[2]);
+  });
+  const translatedTitles = await translator.TranslateLanguageData({
+    listOfWordsToTranslate: titles,
+    fromLanguage: "en",
+    toLanguage: language,
+  });
+  const translatedDescriptions = await translator.TranslateLanguageData({
+    listOfWordsToTranslate: descriptions,
+    fromLanguage: "en",
+    toLanguage: language,
+  });
   for (let i = 1; i < data.length; i++) {
     const catalogItem = data[i];
-    const [id, title, description] = catalogItem;
-    const translations = await translator.TranslateLanguageData({
-      listOfWordsToTranslate: [titles],
-      fromLanguage: "en",
-      toLanguage: "ko",
-    });
-    console.log(translations)
-    csvData.push(Object.values({ id }));
+    csvData.push(
+      Object.values({
+        id: catalogItem[0],
+        title: titles[i],
+        description: descriptions[i],
+      })
+    );
   }
+  // Add the headers to the CSV data
+  csvData.unshift(headers);
+
+  // Convert the CSV data to a string
+  const csvString = csvData.map((row) => row.join(",")).join("\n");
+
+  // Export the CSV file
+  // Create a blob with the CSV data
+  const blob = new Blob([csvString], { type: "text/csv" });
+  // Create a link to download the CSV file
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `catalog_${languageName}.csv`;
+  a.click();
+  // Clean up
+  URL.revokeObjectURL(url);
 };
 
 export default generateCatalog;
