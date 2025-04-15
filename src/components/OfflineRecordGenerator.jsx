@@ -8,11 +8,11 @@ export const OfflineRecordGenerator = () => {
   const [numRecords, setNumRecords] = useState(10);
   const [eventType, setEventType] = useState("Purchase");
   const handleGenerateCSV = () => {
-    if(state.catalogContentIDs.length===0) window.alert("No catalog IDs found, this will generate a high mismatch with your catalog ID.")
+    if(state.catalogContent.length===0) window.alert("No catalog IDs found, this will generate a high mismatch with your catalog ID.")
     generateOfflineRecords({
       numRecords,
       eventType,
-      catalogContentIDs: state.catalogContentIDs,
+      catalogContentIDs: state.catalogContent.id,
     });
     alert("CSV Generated and downloaded");
   };

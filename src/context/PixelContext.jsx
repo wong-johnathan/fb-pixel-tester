@@ -9,7 +9,7 @@ export const initialState = {
   testEventCode: localStorage.getItem("testEventCode") ?? "",
   accessToken: localStorage.getItem("accessToken") ?? "",
   catalogLink: localStorage.getItem("catalogLink") ?? "",
-  catalogContentIDs: [],
+  catalogContent: [],
 };
 
 const MetaProvider = ({ children }) => {
@@ -30,13 +30,12 @@ const MetaProvider = ({ children }) => {
             if (Array.isArray(data))
               setState({
                 ...state,
-                catalogContentIDs: data.map((data) => data.id),
+                catalogContent: data,
               });
           });
       }
     });
   }, [state.catalogLink]);
-  
 
   return (
     <MetaContext.Provider value={{ state, updateState }}>
