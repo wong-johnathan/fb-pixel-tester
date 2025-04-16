@@ -103,7 +103,7 @@ const Product = () => {
         setUserInfo={setUserInfo}
       />
       <h3>{content.title}</h3>
-      {loading ? "Loading Image...":<img height="400px" width="400px" src={content.image_link} />}
+      {loading ? "Loading Image...":<img style={{maxWidth:"400px", maxHeight:"400px"}} src={content.image_link} />}
       <p>{content.description}</p>
       <p>{content.price}</p>
       <div style={{ display: "flex", columnGap: "0.25rem" }}>
