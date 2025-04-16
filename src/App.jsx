@@ -144,6 +144,7 @@ function App() {
         marginRight: "auto",
       }}
     >
+      <h3 style={{textAlign:"center"}}>Signal, Pixel, Catalog Tester</h3>
       <ConfigInput state={state} handleUpdate={handleUpdate} />
       <hr />
       <UserDetailsInput
