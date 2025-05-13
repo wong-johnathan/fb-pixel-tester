@@ -119,7 +119,7 @@ const EventDetailsInput = ({
                   minWidth="150px"
                   value={customEventName}
                   onChange={(e) => setCustomEventName(e.target.value)}
-                />
+                /><span style={{fontStyle:"italics",fontSize:"0.75rem"}}>Character Count: {customEventName?.length ?? 0}</span>
                 {parameters.map((parameter, index) => {
                   return (
                     <div
