@@ -6,15 +6,15 @@ export const sendCAPI = async (
   accessToken,
   pixelId,
   testEventCode,
-  event_id
+  event_id,
+  eventType
 ) => {
   const { data: responseData } = await axios.get("https://api.ipify.org");
   const cookies = document.cookie.split(";").map(Cookie.parse);
   const fbp = cookies.find((cookie) => (cookie.key = "_fbp"));
-
   const eventData = [
     {
-      event_name: data.eventType,
+      event_name: eventType,
       event_time: Math.floor(new Date() / 1000),
       event_id,
       user_data: {

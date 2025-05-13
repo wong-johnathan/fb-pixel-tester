@@ -71,6 +71,7 @@ function App() {
         break;
       case "capi":
         handleSendCAPI({
+          eventType: customData.eventType,
           eventID,
           dataParams: _dataParams,
         });
@@ -85,6 +86,7 @@ function App() {
           userInfo,
         });
         handleSendCAPI({
+          eventType: customData ? customData.eventType : eventType,
           eventID,
           dataParams: _dataParams,
         });
@@ -115,7 +117,7 @@ function App() {
     navigate(`/${faker.string.uuid()}`);
   };
 
-  const handleSendCAPI = ({ eventID, dataParams }) => {
+  const handleSendCAPI = ({ eventID, dataParams, eventType }) => {
     const hashedUserInfo = {};
     Object.entries(userInfo).forEach(([key, value]) => {
       hashedUserInfo[key] = [sha256(String(value))];
@@ -125,7 +127,7 @@ function App() {
       state.accessToken,
       state.pixelId,
       state.testEventCode,
-      eventID
+      eventID,eventType
     );
   };
 
