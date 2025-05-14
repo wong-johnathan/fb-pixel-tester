@@ -60,6 +60,18 @@ To set up a catalog link, follow these steps:
 3. **Publish as CSV**: Publish the sheet as a CSV file.
 4. **Copy and Paste Link**: Copy the link and paste it into the **Catalog Link** field.
 
+---
+
+## Catalog CSV Generator
+
+This feature generates three CSV files:
+
+1. **catalog.csv**: This is the main catalog file.
+2. **catalog_Malay.csv**: This file serves as a supplementary feed in Bahasa.
+3. **catalog_Filipino.csv**: This file serves as a supplementary feed in Filipino.
+
+These files can be used to manage and test different catalog feeds effectively.
+
 ## Cloning the Project
 
 ---
