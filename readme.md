@@ -8,11 +8,11 @@ A ReactJS tool for testing Meta Pixel and CAPI payloads, generating offline cust
 
 ---
 
-- [Getting Started](#getting-started)
-- [Requirements](#requirements)
-- [Features](#features)
-- [Catalog Link Setup](#catalog-link-setup)
-- [Cloning the Project](#cloning-the-project)
+- Getting Started
+- Requirements
+- Features
+- Catalog Link Setup
+- Cloning the Project
 
 ## Getting Started
 
