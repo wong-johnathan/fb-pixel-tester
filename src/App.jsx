@@ -71,7 +71,7 @@ function App() {
         break;
       case "capi":
         handleSendCAPI({
-          eventType: customData.eventType,
+          eventType: customData ? customData.eventType : eventType,
           eventID,
           dataParams: _dataParams,
         });
