@@ -31,7 +31,7 @@ jobs:
         run: npm run build
 
       - name: Upload artifact for GitHub Pages
-        uses: actions/upload-pages@v4
+        uses: actions/upload-pages-artifact@v1
         with:
           path: ./build   # your custom build output folder
           name: github-pages
@@ -42,11 +42,6 @@ jobs:
     environment:
       name: github-pages
 
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: github-pages
-          path: .
+    steps:=
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v1
