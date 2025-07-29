@@ -7,6 +7,7 @@ export default defineConfig({
   build: {
     outDir: "build"
   },
+  base:"/fb-pixel-tester/",
   server: {
     host:"0.0.0.0",
     port:3000,
