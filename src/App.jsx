@@ -127,7 +127,8 @@ function App() {
       state.accessToken,
       state.pixelId,
       state.testEventCode,
-      eventID,eventType
+      eventID,
+      eventType
     );
   };
 
@@ -137,57 +138,78 @@ function App() {
   };
 
   return (
-    <div
-      style={{
-        width: "auto",
-        padding: "1rem",
-        maxWidth: "800px",
-        marginLeft: "auto",
-        marginRight: "auto",
-      }}
-    >
-      <h3 style={{textAlign:"center"}}>Signal, Pixel, Catalog Tester</h3>
-      <ConfigInput state={state} handleUpdate={handleUpdate} />
-      <hr />
-      <UserDetailsInput
-        onChange={handleUserInfo}
-        userInfo={userInfo}
-        setUserInfo={setUserInfo}
-      />
-      <hr />
-      <EventDetailsInput
-        handleDataParams={handleDataParams}
-        handleEventSelect={handleEventSelect}
-        dataParams={dataParams}
-        eventType={eventType}
-        sendEvent={sendEvent}
-      />
-      <hr />
-      <div style={{ textAlign: "center" }}>
-        <button style={{ width: "100%" }} onClick={randomUrlNavigate}>
-          Random Url
-        </button>
-      </div>
-      <hr />
-      {message && (
-        <>
-          <span dangerouslySetInnerHTML={{ __html: message }} />
-          <hr />
-        </>
-      )}
-      <OfflineRecordGenerator />
-      <hr/>
-      
-      <GenerateCatalog />
-      <hr />
-      {state.catalogContent.length > 0 && (
+    <>
+      <div
+        style={{
+          width: "auto",
+          padding: "1rem",
+          maxWidth: "800px",
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
+        <h3 style={{ textAlign: "center" }}>Signal, Pixel, Catalog Tester</h3>
+        <ConfigInput state={state} handleUpdate={handleUpdate} />
+        <hr />
+        <UserDetailsInput
+          onChange={handleUserInfo}
+          userInfo={userInfo}
+          setUserInfo={setUserInfo}
+        />
+        <hr />
+        <EventDetailsInput
+          handleDataParams={handleDataParams}
+          handleEventSelect={handleEventSelect}
+          dataParams={dataParams}
+          eventType={eventType}
+          sendEvent={sendEvent}
+        />
+        <hr />
         <div style={{ textAlign: "center" }}>
-          <button style={{ width: "100%" }} onClick={randomCatalogItem}>
-            Go to random catalog item
+          <button style={{ width: "100%" }} onClick={randomUrlNavigate}>
+            Random Url
           </button>
         </div>
-      )}
-    </div>
+        <hr />
+        {message && (
+          <>
+            <span dangerouslySetInnerHTML={{ __html: message }} />
+            <hr />
+          </>
+        )}
+        <OfflineRecordGenerator />
+        <hr />
+
+        <GenerateCatalog />
+        <hr />
+        {state.catalogContent.length > 0 && (
+          <div style={{ textAlign: "center" }}>
+            <button style={{ width: "100%" }} onClick={randomCatalogItem}>
+              Go to random catalog item
+            </button>
+          </div>
+        )}
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          paddingBottom: "1.5rem",
+          left:"50%",
+          transform:"translateX(-50%)"
+        }}
+      >
+        <div style={{ display: "flex", columnGap:'2rem' }}>
+          <a href="https://github.com/wong-johnathan/fb-pixel-tester/blob/master/readme.md">
+            Instructions
+          </a>
+          <span>|</span>
+          <a href="https://github.com/wong-johnathan/fb-pixel-tester/tree/master">
+            Git
+          </a>
+        </div>
+      </div>
+    </>
   );
 }
 
