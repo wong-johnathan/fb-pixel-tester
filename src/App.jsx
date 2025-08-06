@@ -146,6 +146,7 @@ function App() {
           maxWidth: "800px",
           marginLeft: "auto",
           marginRight: "auto",
+          height:'100vh'
         }}
       >
         <h3 style={{ textAlign: "center" }}>Signal, Pixel, Catalog Tester</h3>
@@ -189,24 +190,28 @@ function App() {
             </button>
           </div>
         )}
-      </div>
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          paddingBottom: "1.5rem",
-          left:"50%",
-          transform:"translateX(-50%)"
-        }}
-      >
-        <div style={{ display: "flex", columnGap:'2rem' }}>
-          <a href="https://github.com/wong-johnathan/fb-pixel-tester/blob/master/readme.md">
-            Instructions
-          </a>
-          <span>|</span>
-          <a href="https://github.com/wong-johnathan/fb-pixel-tester/tree/master">
-            Git
-          </a>
+        <div
+          style={{
+            paddingBottom: "1.5rem",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              columnGap: "2rem",
+              height: "25px",
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+          >
+            <a href="https://github.com/wong-johnathan/fb-pixel-tester/blob/master/readme.md">
+              Instructions
+            </a>
+            <span>|</span>
+            <a href="https://github.com/wong-johnathan/fb-pixel-tester/tree/master">
+              Git
+            </a>
+          </div>
         </div>
       </div>
     </>
