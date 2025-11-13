@@ -1,7 +1,7 @@
 name: Reuseable workflow with Semgrep
 
 on:
-  workflow_call:
+  workflow_dispatch:
 
 jobs:
   sembrep:
