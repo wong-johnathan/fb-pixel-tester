@@ -29,7 +29,7 @@ const generateCatalog = ({ numRecords }) => {
       availability: "in stock",
       condition: "new",
       price: price,
-      link: `https://gossamer-outgoing-advantage.glitch.me/product/${id}`,
+      link: `https://${window.location.hostname}/product/${id}`,
       image_link: faker.image.urlPicsumPhotos(),
       brand: "John",
       quantity_to_sell_on_facebook: faker.number.int(100),
