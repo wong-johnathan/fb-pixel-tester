@@ -43,12 +43,12 @@ function App() {
       : `Sending tracking event: ${eventType}`;
 
     const dataParamsMessage = `With data params: {${Object.entries(
-      _dataParams
+      _dataParams,
     ).map(([key, value]) => `${key}:${value}`)}}`;
 
     const userMessage = Object.keys(userInfo.length > 0)
       ? `User details are sent hashed<br>With user details: {${Object.entries(
-          userInfo
+          userInfo,
         ).map(([key, value]) => `${key}:${value}`)}}`
       : "With no user details";
 
@@ -128,7 +128,7 @@ function App() {
       state.pixelId,
       state.testEventCode,
       eventID,
-      eventType
+      eventType,
     );
   };
 
@@ -146,7 +146,7 @@ function App() {
           maxWidth: "800px",
           marginLeft: "auto",
           marginRight: "auto",
-          height:'100vh'
+          height: "100vh",
         }}
       >
         <h3 style={{ textAlign: "center" }}>Signal, Pixel, Catalog Tester</h3>
@@ -201,7 +201,7 @@ function App() {
               columnGap: "2rem",
               height: "25px",
               alignItems: "center",
-              justifyContent: "center"
+              justifyContent: "center",
             }}
           >
             <a href="https://github.com/wong-johnathan/fb-pixel-tester/blob/master/readme.md">
