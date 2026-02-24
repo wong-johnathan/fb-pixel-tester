@@ -23,7 +23,7 @@ pipeline {
       stage('Semgrep-Scan') {
         steps {
           sh 'pip3 install semgrep --break-system-packages'
-          sh '$HOME/.local/bin/semgrep ci'
+          sh '$HOME/.local/lib/python3.13/site-packages ci'
       }
     }
   }
