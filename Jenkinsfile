@@ -22,8 +22,16 @@ pipeline {
     stages {
       stage('Semgrep-Scan') {
         steps {
-          sh 'pip3 install semgrep'
-          sh 'semgrep ci'
+            sh '''docker pull semgrep/semgrep && \
+            docker run \
+            -e SEMGREP_APP_TOKEN=$SEMGREP_APP_TOKEN \
+            -e SEMGREP_REPO_URL=$SEMGREP_REPO_URL \
+            -e SEMGREP_REPO_NAME=$SEMGREP_REPO_NAME \
+            -e SEMGREP_BRANCH=$SEMGREP_BRANCH \
+            -e SEMGREP_COMMIT=$SEMGREP_COMMIT \
+            -e SEMGREP_PR_ID=$SEMGREP_PR_ID \
+            -v "$(pwd):$(pwd)" --workdir $(pwd) \
+            semgrep/semgrep semgrep ci '''
       }
     }
   }
