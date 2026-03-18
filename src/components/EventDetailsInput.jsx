@@ -14,13 +14,11 @@ const EventDetailsInput = ({
   const [parameters, setParameters] = useState([[]]);
   const [customEventName, setCustomEventName] = useState();
 
-  const addParamter = () => {
-    setParameters((prevState) => [...prevState, []]);
-  };
+  const addParameter = () => setParameters((prev) => [...prev, []]);
 
-  const handleParamterUpdate = (index, key, value) => {
-    setParameters((prevState) =>
-      prevState.map((parameter, i) => {
+  const handleParameterUpdate = (index, key, value) => {
+    setParameters((prev) =>
+      prev.map((parameter, i) => {
         if (i === index) parameter[key] = value;
         return parameter;
       })
@@ -30,47 +28,24 @@ const EventDetailsInput = ({
   const handleSendCustomEvent = (type) => {
     const dataParams = {};
     for (const parameter of parameters) dataParams[parameter[0]] = parameter[1];
-    sendEvent({
-      customData: {
-        eventType: customEventName,
-        dataParams,
-      },
-      type
-    });
+    sendEvent({ customData: { eventType: customEventName, dataParams }, type });
     setParameters([[]]);
   };
 
   const handleSend = (type) => {
     if (eventType === "CustomEvent") handleSendCustomEvent(type);
-    else sendEvent({type});
+    else sendEvent({ type });
   };
 
+  const selectedEvent = fbEvents.find((e) => e.name === eventType);
+
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyItems: "center",
-          alignItems: "center",
-          paddingBottom: "0.5rem",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            columnGap: "0.25rem",
-            paddingBottom: "0.25rem",
-          }}
-        >
-          <label htmlFor="eventType">Event Type:</label>
+    <div className="card">
+      <p className="card-title">Event Details</p>
+
+      <div className="field-grid-1" style={{ maxWidth: 420 }}>
+        <div className="select-row">
+          <label htmlFor="eventType">Event Type</label>
           <select id="eventType" onChange={handleEventSelect} value={eventType}>
             <option>Select event type</option>
             {fbEvents.map((event) => (
@@ -78,148 +53,90 @@ const EventDetailsInput = ({
             ))}
           </select>
         </div>
-        {eventType && (
-          <span style={{ fontStyle: "italic", fontSize: "0.75rem" }}>
-            {fbEvents.find((event) => event.name === eventType).description}
-          </span>
+        {selectedEvent?.description && (
+          <p className="event-description">{selectedEvent.description}</p>
         )}
       </div>
-      {eventType && (
-        <div style={{ paddingLeft: "0.5rem" }}>
-          <p style={{ margin: 0, textAlign: "center" }}>Parameters:</p>
-          <div
-            style={{
-              marginLeft: "0.5rem",
-              display: "flex",
-              flexDirection: "column",
-              rowGap: "0.5rem",
-              justifyItems: "center",
-              alignItems: "center",
-            }}
-          >
-            {fbEvents
-              .find((event) => event.name === eventType)
-              .parameters?.map((parameter) => (
-                <Input
-                  key={parameter.name}
-                  label={parameter.name}
-                  type={parameter.type === "number" ? "number" : "text"}
-                  minWidth="150px"
-                  onChange={handleDataParams}
-                  value={dataParams[parameter.name]}
-                  id={parameter.name}
-                  description={parameter.description}
-                />
-              ))}
-            {eventType === "CustomEvent" && (
-              <>
-                <Input
-                  label="CustomEvent name"
-                  id="customEventType"
-                  minWidth="150px"
-                  value={customEventName}
-                  onChange={(e) => setCustomEventName(e.target.value)}
-                /><span style={{fontStyle:"italics",fontSize:"0.75rem"}}>Character Count: {customEventName?.length ?? 0}</span>
-                {parameters.map((parameter, index) => {
-                  return (
-                    <div
-                      key={`paramters-${index}`}
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        columnGap: "0.5rem",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          columnGap: "0.5rem",
-                        }}
-                      >
-                        <div
-                          style={{ display: "flex", flexDirection: "column" }}
-                        >
-                          <label
-                            style={{
-                              textAlign: "center",
-                              fontStyle: "italics",
-                              fontSize: "0.75rem",
-                            }}
-                            htmlFor={`parameters-${index}-0`}
-                          >
-                            Parameter name:
-                          </label>
-                          <input
-                            id={`parameters-${index}-0`}
-                            value={parameter[0] ?? ""}
-                            onChange={(e) =>
-                              handleParamterUpdate(index, 0, e.target.value)
-                            }
-                          />
-                        </div>
-                        <div
-                          style={{ display: "flex", flexDirection: "column" }}
-                        >
-                          <label
-                            style={{
-                              textAlign: "center",
-                              fontStyle: "italics",
-                              fontSize: "0.75rem",
-                            }}
-                            htmlFor={`parameters-${index}-1`}
-                          >
-                            Parameter value:
-                          </label>
-                          <input
-                            value={parameter[1] ?? ""}
-                            onChange={(e) =>
-                              handleParamterUpdate(index, 1, e.target.value)
-                            }
-                            id={`parameters-${index}-1`}
-                          />
-                        </div>
-                      </div>
-                      <button
-                        style={{ height: "21.5px", alignSelf: "flex-end" }}
-                        onClick={() =>
-                          setParameters((prevState) =>
-                            prevState.filter((p, i) => i !== index)
-                          )
-                        }
-                      >
-                        Del
-                      </button>
+
+      {selectedEvent && (
+        <>
+          {selectedEvent.parameters?.length > 0 && (
+            <>
+              <div className="section-divider" />
+              <p className="card-title" style={{ marginBottom: "0.75rem" }}>Parameters</p>
+              <div className="field-grid">
+                {selectedEvent.parameters.map((parameter) => (
+                  <Input
+                    key={parameter.name}
+                    label={parameter.name}
+                    type={parameter.type === "number" ? "number" : "text"}
+                    onChange={handleDataParams}
+                    value={dataParams[parameter.name]}
+                    id={parameter.name}
+                    description={parameter.description}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+
+          {eventType === "CustomEvent" && (
+            <>
+              <div className="section-divider" />
+              <div className="field-grid-1" style={{ maxWidth: 420 }}>
+                <div className="field">
+                  <label htmlFor="customEventType">Event Name</label>
+                  <input
+                    id="customEventType"
+                    value={customEventName ?? ""}
+                    onChange={(e) => setCustomEventName(e.target.value)}
+                  />
+                  <span className="field-hint">Character count: {customEventName?.length ?? 0}</span>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginTop: "0.75rem" }}>
+                {parameters.map((parameter, index) => (
+                  <div key={`param-${index}`} className="param-row">
+                    <div className="field">
+                      <label htmlFor={`parameters-${index}-0`}>Parameter name</label>
+                      <input
+                        id={`parameters-${index}-0`}
+                        value={parameter[0] ?? ""}
+                        onChange={(e) => handleParameterUpdate(index, 0, e.target.value)}
+                      />
                     </div>
-                  );
-                })}
-                <button onClick={addParamter} style={{ minWidth: "250px" }}>
-                  Add Parameter
+                    <div className="field">
+                      <label htmlFor={`parameters-${index}-1`}>Parameter value</label>
+                      <input
+                        id={`parameters-${index}-1`}
+                        value={parameter[1] ?? ""}
+                        onChange={(e) => handleParameterUpdate(index, 1, e.target.value)}
+                      />
+                    </div>
+                    <button
+                      className="btn btn-danger btn-sm"
+                      style={{ alignSelf: "flex-end", marginBottom: "0.05rem" }}
+                      onClick={() => setParameters((prev) => prev.filter((_, i) => i !== index))}
+                    >
+                      Del
+                    </button>
+                  </div>
+                ))}
+                <button className="btn btn-ghost" style={{ alignSelf: "flex-start" }} onClick={addParameter}>
+                  + Add Parameter
                 </button>
-              </>
-            )}
-            <div style={{ display: "flex", columnGap: "0.5rem" }}>
-              <button
-                onClick={() => handleSend("pixel")}
-                style={{ minWidth: "150px" }}
-              >
-                Send Pixel Event
-              </button>
-              <button
-                onClick={() => handleSend("capi")}
-                style={{ minWidth: "150px" }}
-              >
-                Send CAPI
-              </button>
-              <button
-                onClick={() => handleSend("both")}
-                style={{ minWidth: "150px" }}
-              >
-                Send Both
-              </button>
-            </div>
+              </div>
+            </>
+          )}
+
+          <div className="section-divider" />
+          <div className="btn-group">
+            <button className="btn btn-primary" onClick={() => handleSend("pixel")}>Send Pixel</button>
+            <button className="btn btn-secondary" onClick={() => handleSend("capi")}>Send CAPI</button>
+            <button className="btn btn-success" onClick={() => handleSend("both")}>Send Both</button>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
