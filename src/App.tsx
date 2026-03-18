@@ -1,4 +1,4 @@
-import { useContext, useState, ChangeEvent } from "react";
+import { useContext, useState, useEffect, ChangeEvent } from "react";
 import { MetaContext } from "./context/PixelContext";
 import { ConfigInput } from "./components/ConfigInput";
 import EventDetailsInput from "./components/EventDetailsInput";
@@ -45,6 +45,15 @@ function App() {
     updateState({ ...state, [e.target.id]: e.target.value } as MetaState);
 
   const [activeTab, setActiveTab] = useState<TabId>("tester");
+
+  const [theme, setTheme] = useState<"dark" | "light">(() => {
+    return (localStorage.getItem("theme") as "dark" | "light") ?? "dark";
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
   const [eventType, setEventType] = useState("ViewContent");
   const [dataParams, setDataParams] = useState<Record<string, string | number>>({});
   const [userInfo, setUserInfo] = useState<UserInfo>({});
@@ -124,6 +133,13 @@ function App() {
             </button>
           ))}
         </nav>
+        <button
+          className="theme-toggle"
+          onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
+          title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+        >
+          {theme === "dark" ? "☀️" : "🌙"}
+        </button>
       </header>
 
       <main className="app-main">

@@ -30,7 +30,7 @@ const OfflineRecordGenerator = () => {
           type="number"
           onChange={(e: ChangeEvent<HTMLInputElement>) => setNumRecords(Number(e.target.value))}
         />
-        <div className="select-row">
+        <div className="field">
           <label htmlFor="offlineEventType">Event Type</label>
           <select
             id="offlineEventType"
