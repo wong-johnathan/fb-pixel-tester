@@ -1,7 +1,25 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState, ChangeEvent } from "react";
 import { fbEvents } from "../config/fbEvents";
 import Input from "./Input";
 import { MetaContext } from "../context/PixelContext";
+
+interface CustomData {
+  eventType: string;
+  dataParams: Record<string, string>;
+}
+
+interface SendEventOptions {
+  customData?: CustomData;
+  type: string;
+}
+
+interface EventDetailsInputProps {
+  handleEventSelect: (e: ChangeEvent<HTMLSelectElement>) => void;
+  eventType: string;
+  handleDataParams: (e: ChangeEvent<HTMLInputElement>) => void;
+  sendEvent: (options: SendEventOptions) => void;
+  dataParams: Record<string, string | number>;
+}
 
 const EventDetailsInput = ({
   handleEventSelect,
@@ -9,30 +27,34 @@ const EventDetailsInput = ({
   handleDataParams,
   sendEvent,
   dataParams,
-}) => {
-  const { state } = useContext(MetaContext);
-  const [parameters, setParameters] = useState([[]]);
-  const [customEventName, setCustomEventName] = useState();
+}: EventDetailsInputProps) => {
+  useContext(MetaContext);
+  const [parameters, setParameters] = useState<[string, string][]>([["", ""]]);
+  const [customEventName, setCustomEventName] = useState("");
 
-  const addParameter = () => setParameters((prev) => [...prev, []]);
+  const addParameter = () => setParameters((prev) => [...prev, ["", ""]]);
 
-  const handleParameterUpdate = (index, key, value) => {
+  const handleParameterUpdate = (index: number, key: 0 | 1, value: string) => {
     setParameters((prev) =>
-      prev.map((parameter, i) => {
-        if (i === index) parameter[key] = value;
-        return parameter;
-      })
+      prev.map((param, i) => {
+        if (i === index) {
+          const updated: [string, string] = [...param] as [string, string];
+          updated[key] = value;
+          return updated;
+        }
+        return param;
+      }),
     );
   };
 
-  const handleSendCustomEvent = (type) => {
-    const dataParams = {};
-    for (const parameter of parameters) dataParams[parameter[0]] = parameter[1];
-    sendEvent({ customData: { eventType: customEventName, dataParams }, type });
-    setParameters([[]]);
+  const handleSendCustomEvent = (type: string) => {
+    const customDataParams: Record<string, string> = {};
+    for (const [k, v] of parameters) customDataParams[k] = v;
+    sendEvent({ customData: { eventType: customEventName, dataParams: customDataParams }, type });
+    setParameters([["", ""]]);
   };
 
-  const handleSend = (type) => {
+  const handleSend = (type: string) => {
     if (eventType === "CustomEvent") handleSendCustomEvent(type);
     else sendEvent({ type });
   };
@@ -60,18 +82,18 @@ const EventDetailsInput = ({
 
       {selectedEvent && (
         <>
-          {selectedEvent.parameters?.length > 0 && (
+          {(selectedEvent.parameters?.length ?? 0) > 0 && (
             <>
               <div className="section-divider" />
               <p className="card-title" style={{ marginBottom: "0.75rem" }}>Parameters</p>
               <div className="field-grid">
-                {selectedEvent.parameters.map((parameter) => (
+                {selectedEvent.parameters!.map((parameter) => (
                   <Input
                     key={parameter.name}
                     label={parameter.name}
                     type={parameter.type === "number" ? "number" : "text"}
                     onChange={handleDataParams}
-                    value={dataParams[parameter.name]}
+                    value={dataParams[parameter.name] as string | number | undefined}
                     id={parameter.name}
                     description={parameter.description}
                   />
@@ -88,10 +110,10 @@ const EventDetailsInput = ({
                   <label htmlFor="customEventType">Event Name</label>
                   <input
                     id="customEventType"
-                    value={customEventName ?? ""}
+                    value={customEventName}
                     onChange={(e) => setCustomEventName(e.target.value)}
                   />
-                  <span className="field-hint">Character count: {customEventName?.length ?? 0}</span>
+                  <span className="field-hint">Character count: {customEventName.length}</span>
                 </div>
               </div>
 
@@ -102,7 +124,7 @@ const EventDetailsInput = ({
                       <label htmlFor={`parameters-${index}-0`}>Parameter name</label>
                       <input
                         id={`parameters-${index}-0`}
-                        value={parameter[0] ?? ""}
+                        value={parameter[0]}
                         onChange={(e) => handleParameterUpdate(index, 0, e.target.value)}
                       />
                     </div>
@@ -110,7 +132,7 @@ const EventDetailsInput = ({
                       <label htmlFor={`parameters-${index}-1`}>Parameter value</label>
                       <input
                         id={`parameters-${index}-1`}
-                        value={parameter[1] ?? ""}
+                        value={parameter[1]}
                         onChange={(e) => handleParameterUpdate(index, 1, e.target.value)}
                       />
                     </div>

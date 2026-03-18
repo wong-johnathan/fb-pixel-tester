@@ -1,13 +1,13 @@
 import "./styles.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.jsx";
-import { MetaProvider } from "./context/PixelContext.jsx";
-import Product from './components/Product'
-import Microdata from './components/Microdata'
+import App from "./App";
+import { MetaProvider } from "./context/PixelContext";
+import Product from "./components/Product";
+import Microdata from "./components/Microdata";
 import { BrowserRouter, Routes, Route } from "react-router";
 
-createRoot(document.getElementById("root")).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <MetaProvider>
       <BrowserRouter>
@@ -19,5 +19,5 @@ createRoot(document.getElementById("root")).render(
         </Routes>
       </BrowserRouter>
     </MetaProvider>
-  </StrictMode>
+  </StrictMode>,
 );

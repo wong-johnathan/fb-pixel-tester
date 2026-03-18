@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import generateCatalog from "../utils/generateCatalog";
 import Input from "./Input";
 
@@ -11,7 +11,7 @@ const GenerateCatalog = () => {
       <div className="field-grid-1" style={{ maxWidth: 300 }}>
         <Input
           label="Number of records"
-          onChange={(e) => setNumRecords(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setNumRecords(Number(e.target.value))}
           value={numRecords}
           id="record"
           type="number"

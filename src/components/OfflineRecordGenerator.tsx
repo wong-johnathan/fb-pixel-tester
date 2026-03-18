@@ -1,6 +1,6 @@
 import generateOfflineRecords from "../utils/generateOfflineRecords";
 import Input from "./Input";
-import React, { useState, useContext } from "react";
+import { useState, useContext, ChangeEvent } from "react";
 import { fbEvents } from "../config/fbEvents";
 import { MetaContext } from "../context/PixelContext";
 
@@ -12,7 +12,11 @@ const OfflineRecordGenerator = () => {
   const handleGenerateCSV = () => {
     if (state.catalogContent.length === 0)
       window.alert("No catalog IDs found — this will generate a high mismatch with your catalog.");
-    generateOfflineRecords({ numRecords, eventType, catalogContentIDs: state.catalogContent.id });
+    generateOfflineRecords({
+      numRecords,
+      eventType,
+      catalogContentIDs: state.catalogContent.map((c) => c.id),
+    });
     alert("CSV generated and downloaded");
   };
 
@@ -24,11 +28,15 @@ const OfflineRecordGenerator = () => {
           value={numRecords}
           label="Number of records"
           type="number"
-          onChange={(e) => setNumRecords(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setNumRecords(Number(e.target.value))}
         />
         <div className="select-row">
           <label htmlFor="offlineEventType">Event Type</label>
-          <select id="offlineEventType" onChange={(e) => setEventType(e.target.value)} value={eventType}>
+          <select
+            id="offlineEventType"
+            onChange={(e) => setEventType(e.target.value)}
+            value={eventType}
+          >
             <option>Select event type</option>
             {fbEvents.map((event) => (
               <option key={event.name}>{event.name}</option>

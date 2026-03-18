@@ -1,6 +1,13 @@
+import { ChangeEvent } from "react";
 import Input from "./Input";
+import type { MetaState } from "../types";
 
-export const ConfigInput = ({ state, handleUpdate }) => (
+interface ConfigInputProps {
+  state: MetaState;
+  handleUpdate: (e: ChangeEvent<HTMLInputElement>) => void;
+}
+
+export const ConfigInput = ({ state, handleUpdate }: ConfigInputProps) => (
   <div className="card">
     <p className="card-title">Meta Configuration</p>
     <div className="field-grid">

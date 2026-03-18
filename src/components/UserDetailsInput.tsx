@@ -1,8 +1,16 @@
+import { ChangeEvent } from "react";
 import { faker } from "@faker-js/faker";
 import { userInfoFieldsJson } from "../config/userInfoJson";
 import Input from "./Input";
+import type { UserInfo } from "../types";
 
-const UserDetailsInput = ({ onChange, userInfo, setUserInfo }) => {
+interface UserDetailsInputProps {
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  userInfo: UserInfo;
+  setUserInfo: (info: UserInfo) => void;
+}
+
+const UserDetailsInput = ({ onChange, userInfo, setUserInfo }: UserDetailsInputProps) => {
   const handleRandomGenerate = () => {
     setUserInfo({
       em: faker.internet.email(),
@@ -15,7 +23,12 @@ const UserDetailsInput = ({ onChange, userInfo, setUserInfo }) => {
 
   return (
     <div className="card">
-      <p className="card-title">User Info <span style={{ fontWeight: 400, textTransform: "none", fontSize: "0.72rem" }}>(optional — hashed before sending)</span></p>
+      <p className="card-title">
+        User Info{" "}
+        <span style={{ fontWeight: 400, textTransform: "none", fontSize: "0.72rem" }}>
+          (optional — hashed before sending)
+        </span>
+      </p>
       <div className="field-grid">
         {userInfoFieldsJson.map((field) => (
           <Input
@@ -23,7 +36,7 @@ const UserDetailsInput = ({ onChange, userInfo, setUserInfo }) => {
             onChange={onChange}
             id={field.parameter}
             label={field.label}
-            value={userInfo[field.parameter]}
+            value={String(userInfo[field.parameter] ?? "")}
           />
         ))}
       </div>

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, ChangeEvent } from "react";
 import { MetaContext } from "./context/PixelContext";
 import { ConfigInput } from "./components/ConfigInput";
 import EventDetailsInput from "./components/EventDetailsInput";
@@ -6,43 +6,61 @@ import UserDetailsInput from "./components/UserDetailsInput";
 import { useNavigate } from "react-router";
 import { faker } from "@faker-js/faker";
 import { sendCAPI, sendPixel } from "./utils";
-import sha256 from "js-sha256";
+import { sha256 } from "js-sha256";
 import OfflineRecordGenerator from "./components/OfflineRecordGenerator";
-import axios from "axios";
 import GenerateCatalog from "./components/GenerateCatalog";
+import type { UserInfo, MetaState } from "./types";
 
-const prepareParamsData = (data) => {
-  Object.keys(data).forEach((key) => {
-    if (key === "content_ids") data[key] = String(data[key]).split(",");
+const prepareParamsData = (data: Record<string, unknown>): Record<string, unknown> => {
+  const result = { ...data };
+  Object.keys(result).forEach((key) => {
+    if (key === "content_ids") result[key] = String(result[key]).split(",");
   });
-  return data;
+  return result;
 };
+
+interface CustomData {
+  eventType: string;
+  dataParams: Record<string, string>;
+}
+
+interface SendEventOptions {
+  customData?: CustomData;
+  type: string;
+}
+
+const TABS = [
+  { id: "config", label: "Config" },
+  { id: "tester", label: "Event Tester" },
+  { id: "tools", label: "Tools" },
+] as const;
+
+type TabId = (typeof TABS)[number]["id"];
 
 function App() {
   const navigate = useNavigate();
   const { state, updateState } = useContext(MetaContext);
-  const handleUpdate = (e) => updateState({ ...state, [e.target.id]: e.target.value });
 
-  const [activeTab, setActiveTab] = useState("tester");
+  const handleUpdate = (e: ChangeEvent<HTMLInputElement>) =>
+    updateState({ ...state, [e.target.id]: e.target.value } as MetaState);
+
+  const [activeTab, setActiveTab] = useState<TabId>("tester");
   const [eventType, setEventType] = useState("ViewContent");
-  const [dataParams, setDataParams] = useState({});
-  const [userInfo, setUserInfo] = useState({});
-  const [message, setMessage] = useState();
+  const [dataParams, setDataParams] = useState<Record<string, string | number>>({});
+  const [userInfo, setUserInfo] = useState<UserInfo>({});
+  const [message, setMessage] = useState<string>();
 
-  const sendEvent = ({ customData, type } = {}) => {
+  const sendEvent = ({ customData, type }: SendEventOptions) => {
     const eventID = faker.string.uuid();
     const _dataParams = customData
       ? prepareParamsData(customData.dataParams)
       : prepareParamsData(dataParams);
 
-    const startMessage = customData
-      ? `Event: ${customData.eventType}`
-      : `Event: ${eventType}`;
-
+    const currentEventType = customData ? customData.eventType : eventType;
+    const methodMessage = type === "both" ? "Sent via: CAPI + Pixel" : `Sent via: ${type}`;
     const dataParamsMessage = `Params: {${Object.entries(_dataParams)
       .map(([k, v]) => `${k}: ${v}`)
       .join(", ")}}`;
-
     const userMessage =
       Object.keys(userInfo).length > 0
         ? `User: {${Object.entries(userInfo)
@@ -50,39 +68,24 @@ function App() {
             .join(", ")}} (sent hashed)`
         : "User: none";
 
-    const methodMessage = type === "both" ? "Sent via: CAPI + Pixel" : `Sent via: ${type}`;
-    setMessage(`${methodMessage}\n${startMessage}\n${dataParamsMessage}\n${userMessage}`);
+    setMessage(`${methodMessage}\nEvent: ${currentEventType}\n${dataParamsMessage}\n${userMessage}`);
 
     switch (type) {
       case "pixel":
-        sendPixel({
-          isCustom: !!customData,
-          dataParams: _dataParams,
-          eventType: customData ? customData.eventType : eventType,
-          eventID,
-          pixelId: state.pixelId,
-          userInfo,
-        });
+        sendPixel({ isCustom: !!customData, dataParams: _dataParams, eventType: currentEventType, eventID, pixelId: state.pixelId, userInfo });
         break;
       case "capi":
-        handleSendCAPI({ eventType: customData ? customData.eventType : eventType, eventID, dataParams: _dataParams });
+        handleSendCAPI({ eventType: currentEventType, eventID, dataParams: _dataParams });
         break;
       default:
-        sendPixel({
-          isCustom: !!customData,
-          dataParams: _dataParams,
-          eventType: customData ? customData.eventType : eventType,
-          eventID,
-          pixelId: state.pixelId,
-          userInfo,
-        });
-        handleSendCAPI({ eventType: customData ? customData.eventType : eventType, eventID, dataParams: _dataParams });
+        sendPixel({ isCustom: !!customData, dataParams: _dataParams, eventType: currentEventType, eventID, pixelId: state.pixelId, userInfo });
+        handleSendCAPI({ eventType: currentEventType, eventID, dataParams: _dataParams });
     }
     setDataParams({});
   };
 
-  const handleSendCAPI = ({ eventID, dataParams, eventType }) => {
-    const hashedUserInfo = {};
+  const handleSendCAPI = ({ eventID, dataParams, eventType }: { eventID: string; dataParams: Record<string, unknown>; eventType: string }) => {
+    const hashedUserInfo: Record<string, string[]> = {};
     Object.entries(userInfo).forEach(([key, value]) => {
       hashedUserInfo[key] = [sha256(String(value))];
     });
@@ -97,7 +100,7 @@ function App() {
   };
 
   const randomUrlNavigate = () => {
-    setMessage();
+    setMessage(undefined);
     navigate(`/${faker.string.uuid()}`);
   };
 
@@ -105,12 +108,6 @@ function App() {
     const randomIndex = Math.floor(Math.random() * state.catalogContent.length);
     navigate(`/product/${state.catalogContent[randomIndex].id}`);
   };
-
-  const TABS = [
-    { id: "config", label: "Config" },
-    { id: "tester", label: "Event Tester" },
-    { id: "tools", label: "Tools" },
-  ];
 
   return (
     <div className="app">
@@ -130,13 +127,15 @@ function App() {
       </header>
 
       <main className="app-main">
-        {activeTab === "config" && (
-          <ConfigInput state={state} handleUpdate={handleUpdate} />
-        )}
+        {activeTab === "config" && <ConfigInput state={state} handleUpdate={handleUpdate} />}
 
         {activeTab === "tester" && (
           <>
-            <UserDetailsInput onChange={(e) => setUserInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }))} userInfo={userInfo} setUserInfo={setUserInfo} />
+            <UserDetailsInput
+              onChange={(e) => setUserInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }))}
+              userInfo={userInfo}
+              setUserInfo={setUserInfo}
+            />
             <EventDetailsInput
               handleDataParams={(e) => setDataParams((prev) => ({ ...prev, [e.target.id]: e.target.value }))}
               handleEventSelect={(e) => setEventType(e.target.value)}
