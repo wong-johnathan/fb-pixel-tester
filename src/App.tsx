@@ -3,7 +3,7 @@ import { MetaContext } from "./context/PixelContext";
 import { ConfigInput } from "./components/ConfigInput";
 import EventDetailsInput from "./components/EventDetailsInput";
 import UserDetailsInput from "./components/UserDetailsInput";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { faker } from "@faker-js/faker";
 import { sendCAPI, sendPixel } from "./utils";
 import { sha256 } from "js-sha256";
@@ -45,7 +45,11 @@ function App() {
   const handleUpdate = (e: ChangeEvent<HTMLInputElement>) =>
     updateState({ ...state, [e.target.id]: e.target.value } as MetaState);
 
-  const [activeTab, setActiveTab] = useState<TabId>("tester");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabParam = searchParams.get("tab") as TabId | null;
+  const activeTab: TabId = tabParam && TABS.some((t) => t.id === tabParam) ? tabParam : "tester";
+
+  const setActiveTab = (tab: TabId) => setSearchParams({ tab }, { replace: true });
 
   const [theme, setTheme] = useState<"dark" | "light">(() => {
     return (localStorage.getItem("theme") as "dark" | "light") ?? "dark";
