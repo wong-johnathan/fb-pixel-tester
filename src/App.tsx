@@ -33,6 +33,7 @@ const TABS = [
   { id: "config", label: "Config" },
   { id: "tester", label: "Event Tester" },
   { id: "tools", label: "Tools" },
+  { id: "instructions", label: "Instructions" },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"];
@@ -177,6 +178,75 @@ function App() {
               </div>
             </div>
           </>
+        )}
+
+        {activeTab === "instructions" && (
+          <div className="instructions">
+            <div className="instructions-hero">
+              <h2 className="instructions-title">Signal, Pixel &amp; Catalog Tester</h2>
+              <p className="instructions-subtitle">
+                A tool for testing Meta Pixel and CAPI payloads, generating offline custom events, and creating catalog CSV files.
+                All data is stored locally via <code>localStorage</code> — your credentials never leave the browser.
+              </p>
+            </div>
+
+            <div className="instructions-section">
+              <h3 className="instructions-heading">Requirements</h3>
+              <ol className="instructions-list">
+                <li><strong>Meta Pixel ID</strong> — found in your Meta Events Manager</li>
+                <li><strong>Access Token</strong> — a system user token with <code>ads_management</code> permission</li>
+                <li><strong>Event Test Code</strong> <span className="instructions-optional">(optional)</span> — from Events Manager → Test Events. If omitted, events fire as normal production traffic.</li>
+                <li><strong>Catalog Link</strong> <span className="instructions-optional">(optional)</span> — a publicly published Google Sheets CSV URL</li>
+              </ol>
+            </div>
+
+            <div className="instructions-section">
+              <h3 className="instructions-heading">Getting Started</h3>
+              <ol className="instructions-list">
+                <li>Go to the <strong>Config</strong> tab and enter your Pixel ID and Access Token.</li>
+                <li>Optionally add an Event Test Code to route events to the test channel.</li>
+                <li>Switch to the <strong>Event Tester</strong> tab to send events.</li>
+              </ol>
+            </div>
+
+            <div className="instructions-section">
+              <h3 className="instructions-heading">Event Tester Features</h3>
+              <ul className="instructions-list">
+                <li><strong>Generate Random</strong> — fills in fake PII (email, name, phone) to send with the event.</li>
+                <li><strong>Clear User Info</strong> — removes all PII so events fire without user data.</li>
+                <li><strong>Send Pixel</strong> — fires a browser-side pixel event via the FB SDK.</li>
+                <li><strong>Send CAPI</strong> — sends a server-side Conversions API event directly from the browser.</li>
+                <li><strong>Send Both</strong> — fires both pixel and CAPI simultaneously (recommended for deduplication testing).</li>
+              </ul>
+              <p className="instructions-note">All PII is SHA-256 hashed before being sent to CAPI.</p>
+            </div>
+
+            <div className="instructions-section">
+              <h3 className="instructions-heading">Tools</h3>
+              <ul className="instructions-list">
+                <li><strong>Random URL</strong> — navigates to a random path so you can test the same event from different URLs.</li>
+                <li><strong>Random Catalog Item</strong> — jumps to a random product page (visible once a catalog link is set).</li>
+                <li><strong>Offline Record Generator</strong> — downloads a CSV of faker-generated records for bulk offline event uploads.</li>
+                <li><strong>Catalog CSV Generator</strong> — generates <code>catalog.csv</code>, <code>catalog_Malay.csv</code>, and <code>catalog_Filipino.csv</code> for multi-locale feed testing.</li>
+              </ul>
+            </div>
+
+            <div className="instructions-section">
+              <h3 className="instructions-heading">Catalog Link Setup</h3>
+              <ol className="instructions-list">
+                <li>Generate a catalog using the <strong>Tools</strong> tab.</li>
+                <li>Upload <code>catalog.csv</code> to Google Sheets.</li>
+                <li>In Google Sheets: <em>File → Share → Publish to web</em>, select the sheet, choose <strong>CSV</strong>, and copy the link.</li>
+                <li>Paste the link into the <strong>Catalog Link</strong> field in the Config tab.</li>
+              </ol>
+              <p className="instructions-note">
+                Example:{" "}
+                <code className="instructions-code-block">
+                  https://docs.google.com/spreadsheets/d/e/…/pub?gid=0&single=true&output=csv
+                </code>
+              </p>
+            </div>
+          </div>
         )}
       </main>
 
