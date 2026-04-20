@@ -39,13 +39,13 @@ To use this tool, you'll need the following:
 
 ---
 
-- **Generate Random**: Randomly generates PII data to be sent along with any CAPI or pixel data.
-- **Clear User Info**: Removes all PII data, ensuring any pixel or CAPI data is sent without PII.
-- **Send Pixel Event**: Triggers a browser event to be sent to your pixel.
-- **Send CAPI**: Triggers a CAPI event to be sent to your pixel.
-- **Send Both**: Triggers both a browser and CAPI event to be sent to your pixel.
-- **Random URL**: Redirects the user to a random URL, allowing the same type of event to be sent from different URLs within the test website (e.g., ViewContent in `/abcd` & ViewContent in `/efgh`).
-- **Go to Random Catalog Item**: Once a catalog link is provided, this button appears. Clicking it redirects the user to a random catalog item within the feed.
+- **Generate Random**: Randomly generates PII data to be sent along with any CAPI or pixel data
+- **Clear User Info**: Removes all PII data, ensuring any pixel or CAPI data is sent without PII
+- **Send Pixel Event**: Triggers a browser event to be sent to your pixel
+- **Send CAPI**: Triggers a CAPI event to be sent to your pixel
+- **Send Both**: Triggers both a browser and CAPI event to be sent to your pixel
+- **Random URL**: Redirects the user to a random URL, allowing the same type of event to be sent from different URLs within the test website (e.g., ViewContent in `/abcd` & ViewContent in `/efgh`)
+- **Go to Random Catalog Item**: Once a catalog link is provided, this button appears. Clicking it redirects the user to a random catalog item within the feed
 
 Example Catalog Link: <em>https://docs.google.com/spreadsheets/d/e/2PACX-1vSpRjt0z1aUeaFGcUiz5RTx3mnc57pGCCCUnIAV0oLPKlf68knWu62L7EUcwXqgf_9DjIdEdPVuIaj8/pub?gid=0&single=true&output=csv</em>
 
